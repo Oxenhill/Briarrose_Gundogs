@@ -44,14 +44,12 @@ export function SiteNav({ site }: { site: SiteSettings }) {
         <Link href="/" className="wordmark">
           <Image
             src="/brand/briarrose-logo.jpeg"
-            alt={`${site.businessName} crest`}
-            width={40}
-            height={40}
+            alt={`${site.businessName} — Gundog Training in Sevenoaks, Kent`}
+            width={240}
+            height={300}
             className="crest"
-            style={{ width: 30, height: 30, borderRadius: '50%', objectFit: 'cover' }}
             priority
           />
-          <span>{site.businessName}</span>
         </Link>
 
         <nav className="side" aria-label="Primary, right">

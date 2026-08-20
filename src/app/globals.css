@@ -134,10 +134,10 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s ease, padding 0.3s ease;
-    padding: 30px 0 22px;
+    padding: 20px 0;
   }
   header.site-nav.scrolled {
-    padding: 16px 0;
+    padding: 10px 0;
     border-color: var(--line);
   }
   .nav-row {
@@ -164,15 +164,13 @@
     text-align: center;
   }
   .wordmark .crest {
-    height: 30px;
-    margin: 0 auto 6px;
-    opacity: 0.9;
+    height: 148px;
+    width: auto;
+    object-fit: contain;
+    transition: height 0.3s ease;
   }
-  .wordmark span {
-    font-family: var(--font-display);
-    font-size: 22px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  header.site-nav.scrolled .wordmark .crest {
+    height: 92px;
   }
 
   /* hero — typographic, restrained */
@@ -531,6 +529,12 @@
     }
     .nav-row .side {
       display: none;
+    }
+    .wordmark .crest {
+      height: 104px;
+    }
+    header.site-nav.scrolled .wordmark .crest {
+      height: 76px;
     }
     .class-row {
       grid-template-columns: 32px 1fr 20px;
