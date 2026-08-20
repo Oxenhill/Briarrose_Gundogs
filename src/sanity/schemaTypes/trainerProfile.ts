@@ -1,0 +1,30 @@
+import { defineField, defineType } from 'sanity'
+
+/**
+ * Singleton for the About/Bio page — also powers the Person structured data.
+ */
+export default defineType({
+  name: 'trainerProfile',
+  title: 'Trainer Profile (About page)',
+  type: 'document',
+  fields: [
+    defineField({ name: 'name', title: 'Name', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'jobTitle', title: 'Job title', type: 'string', initialValue: 'Gundog Trainer' }),
+    defineField({ name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } }),
+    defineField({
+      name: 'bio',
+      title: 'Bio',
+      type: 'array',
+      of: [{ type: 'block' }],
+    }),
+    defineField({
+      name: 'credentials',
+      title: 'Qualifications / credentials',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+  ],
+  preview: {
+    select: { title: 'name', media: 'photo' },
+  },
+})
