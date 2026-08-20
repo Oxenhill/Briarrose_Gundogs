@@ -11,7 +11,7 @@ export const structure: StructureResolver = (S) =>
         .id('siteSettings')
         .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
       S.listItem()
-        .title('Trainer Profile (About)')
+        .title('About Page (Trainer Profile)')
         .id('trainerProfile')
         .child(S.document().schemaType('trainerProfile').documentId('trainerProfile')),
       S.divider(),

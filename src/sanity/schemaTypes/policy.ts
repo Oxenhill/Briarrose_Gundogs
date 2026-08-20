@@ -2,9 +2,9 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'policy',
-  title: 'Policy Page',
+  title: 'Policy Pages',
   type: 'document',
-  description: 'Training methods & welfare, Terms & Conditions, Privacy, etc.',
+  description: 'Long-form pages linked from the footer under "Legal" — e.g. Training Methods & Welfare, Terms & Conditions, Privacy.',
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({

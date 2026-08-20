@@ -5,12 +5,19 @@ import { defineField, defineType } from 'sanity'
  */
 export default defineType({
   name: 'trainerProfile',
-  title: 'Trainer Profile (About page)',
+  title: 'About Page (Trainer Profile)',
   type: 'document',
+  description: 'Powers the "About" page (/about) — your name, photo, bio and credentials.',
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({ name: 'jobTitle', title: 'Job title', type: 'string', initialValue: 'Gundog Trainer' }),
-    defineField({ name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } }),
+    defineField({
+      name: 'photo',
+      title: 'Photo',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Shown alongside your bio on the About page.',
+    }),
     defineField({
       name: 'bio',
       title: 'Bio',

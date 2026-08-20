@@ -2,13 +2,14 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'galleryItem',
-  title: 'Gallery Item',
+  title: 'Gallery Photos',
   type: 'document',
+  description: 'Powers the "Gallery" page (/gallery) — one entry per photo.',
   fields: [
-    defineField({ name: 'title', title: 'Title / caption', type: 'string' }),
+    defineField({ name: 'title', title: 'Title / caption (optional)', type: 'string' }),
     defineField({
       name: 'image',
-      title: 'Image',
+      title: 'Photo',
       type: 'image',
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
@@ -17,7 +18,7 @@ export default defineType({
       name: 'category',
       title: 'Category',
       type: 'string',
-      description: 'Used for gallery filtering — keep categories short and consistent, e.g. "Training", "Puppies", "Working Days", "Events".',
+      description: 'For your own organisation when browsing this list in the CMS — not currently shown as filter tabs on the live gallery page.',
       options: {
         list: ['Training', 'Puppies', 'Working Days', 'Events', 'Behind the Scenes'],
       },

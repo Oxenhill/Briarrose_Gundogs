@@ -6,6 +6,7 @@ import { Marquee } from '@/components/marquee'
 import { ClassRow } from '@/components/class-row'
 import { JsonLd } from '@/components/json-ld'
 import { buildMetadata } from '@/lib/seo'
+import { urlForImage } from '@/sanity/lib/image'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -18,6 +19,11 @@ export default async function HomePage() {
     getClasses(),
     getFeaturedTestimonial(),
   ])
+
+  const philosophyImageUrl = site.philosophyImage
+    ? urlForImage(site.philosophyImage).width(680).height(680).url()
+    : null
+  const ctaImageUrl = site.ctaImage ? urlForImage(site.ctaImage).width(900).height(1100).url() : null
 
   return (
     <>
@@ -60,7 +66,9 @@ export default async function HomePage() {
             Meet the Trainer
           </PillLink>
         }
-        markPanel={{ src: '/brand/briarrose-logo.jpeg', alt: `${site.businessName} crest` }}
+        {...(philosophyImageUrl
+          ? { image: { src: philosophyImageUrl, alt: site.businessName } }
+          : { markPanel: { src: '/brand/briarrose-logo.jpeg', alt: `${site.businessName} crest` } })}
       />
 
       <Marquee items={classes.map((c) => c.title)} />
@@ -112,7 +120,9 @@ export default async function HomePage() {
             </PillLink>
           )
         }
-        placeholderTag="Photography placeholder"
+        {...(ctaImageUrl
+          ? { image: { src: ctaImageUrl, alt: site.businessName } }
+          : { placeholderTag: 'Photography placeholder' })}
       />
 
       <JsonLd

@@ -55,9 +55,9 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
         )}
 
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
-          {item.price !== undefined && item.price !== null && (
+          {item.price && (
             <p style={{ fontSize: 14, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 28 }}>
-              From £{item.price}
+              From {item.price}
             </p>
           )}
           {site.bookingUrl && site.bookingUrl !== '#' ? (

@@ -20,7 +20,6 @@ export type SanityImage = {
 
 export const fallbackSiteSettings = {
   businessName: 'Briarrose Gundogs',
-  tagline: 'Gundog training in Kent, done properly.',
   heroEyebrow: 'Sevenoaks & the Kent Weald',
   heroHeadline: 'Gundog training, done properly.',
   heroSubhead:
@@ -29,8 +28,10 @@ export const fallbackSiteSettings = {
   philosophyHeadline: 'Every dog is different. So is every handler.',
   philosophyBody:
     'Placeholder copy — training built around how each dog actually learns, not a one-size method. Real photography of your dogs and grounds will replace this panel.',
+  philosophyImage: null as SanityImage,
   ctaHeadline: "Let's get your dog field-ready.",
   ctaBody: 'Placeholder copy — booking happens on our main booking system; this links straight out.',
+  ctaImage: null as SanityImage,
   bookingUrl: '#',
   phone: '07000 000000',
   email: 'placeholder@briarrosegundogs.co.uk',
@@ -74,7 +75,7 @@ export const fallbackClasses: {
   summary: string
   description: unknown[] | undefined
   stageLabel: string | undefined
-  price: number | undefined
+  price: string | undefined
   image: SanityImage
   order: number
   active: boolean

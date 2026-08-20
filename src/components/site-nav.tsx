@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { SiteSettings } from '@/lib/fallback-content'
+import { urlForImage } from '@/sanity/lib/image'
 
 const NAV_LINKS = [
   { href: '/classes', label: 'Classes' },
@@ -30,6 +31,10 @@ export function SiteNav({ site }: { site: SiteSettings }) {
   const leftLinks = NAV_LINKS.slice(0, half)
   const rightLinks = NAV_LINKS.slice(half)
 
+  // Uses the "Logo" image from Site Settings if one has been uploaded in the
+  // CMS; otherwise falls back to the default logo file shipped with the site.
+  const logoUrl = site.logo ? urlForImage(site.logo).width(480).height(600).url() : '/brand/briarrose-logo.jpeg'
+
   return (
     <header className={`site-nav${scrolled ? ' scrolled' : ''}`}>
       <div className="container nav-row">
@@ -43,7 +48,7 @@ export function SiteNav({ site }: { site: SiteSettings }) {
 
         <Link href="/" className="wordmark">
           <Image
-            src="/brand/briarrose-logo.jpeg"
+            src={logoUrl}
             alt={`${site.businessName} — Gundog Training in Sevenoaks, Kent`}
             width={240}
             height={300}

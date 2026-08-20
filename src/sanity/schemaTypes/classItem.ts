@@ -2,8 +2,9 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'classItem',
-  title: 'Class / Service',
+  title: 'Classes & Services',
   type: 'document',
+  description: 'Powers the "Classes" page (/classes), the homepage class list, and the scrolling marquee — one entry per class or service.',
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({
@@ -35,13 +36,15 @@ export default defineType({
       name: 'price',
       title: 'Price (optional)',
       type: 'string',
-      description: 'Free text so you can show "£35/session", "POA", etc.',
+      description:
+        'Shown exactly as typed on this class\'s page, preceded by "From ". E.g. entering "£35" shows "From £35"; entering "POA" shows "From POA" — so include your own currency symbol or wording.',
     }),
     defineField({
       name: 'image',
-      title: 'Image',
+      title: 'Photo',
       type: 'image',
       options: { hotspot: true },
+      description: 'Shown at the top of this class\'s own page (not on the summary list on /classes or the homepage).',
     }),
     defineField({
       name: 'order',

@@ -41,21 +41,38 @@ These live in two places, both already set: the `.env.local` file in this folder
 
 ## 3. Editing content
 
-Everything lives under `/studio`, organised into sections:
+Everything lives under `/studio`, organised into sections. Each section's name in the Studio sidebar matches the page it powers:
 
-- **Site Settings** (singleton) — hero text, philosophy section, call-to-action copy, booking link, phone/email, address, coverage area, social links, newsletter copy, footer text, and default SEO title/description. This one document drives most of the copy across every page.
-- **Trainer Profile** (singleton) — name, job title, photo, bio, credentials — powers the About page.
-- **Classes** — one entry per class or service. Title, slug, summary, full description, stage/age label, price, photo, display order, and an "active" toggle to hide a class without deleting it. These automatically appear in the homepage list, the scrolling marquee, the `/classes` page, `llms.txt`, and the sitemap — add, edit, reorder, or retire a class here and it updates everywhere.
-- **Dogs** — profiles for `/dogs`.
-- **Testimonials** — quotes, with a "feature on homepage" toggle for the one shown in the pull-quote band.
-- **Gallery** — photo grid for `/gallery`, with categories.
-- **Videos** — embeds for `/videos` (paste a YouTube/Vimeo embed URL).
-- **Journal Posts** — blog posts for `/journal`.
+- **Site Settings** (singleton, at the top of the sidebar) — everything that isn't tied to a specific class, dog, or post: homepage text, contact details, social links, newsletter copy, footer text, and default SEO. Because this one document covers so much, it's split into tabs across the top of the editing screen — **General**, **Homepage: Hero**, **Homepage: Philosophy**, **Homepage: Booking Banner**, **Contact Details**, **Social Links**, **Newsletter & Footer**, and **Branding & SEO**. Your phone number and email address are under the **Contact Details** tab; your logo is under **Branding & SEO**.
+- **About Page (Trainer Profile)** (singleton) — name, job title, photo, bio, credentials — powers `/about`.
+- **Classes & Services** — one entry per class or service. Title, slug, summary, full description, stage/age label, price, photo, display order, and an "active" toggle to hide a class without deleting it. The photo on each entry shows on that class's own page (not the summary list). These automatically appear in the homepage list, the scrolling marquee, the `/classes` page, `llms.txt`, and the sitemap — add, edit, reorder, or retire a class here and it updates everywhere.
+- **Dogs** — profiles for `/dogs`. Each dog has a **main photo** (shown on the `/dogs` grid and at the top of its own page) and optional **additional photos** (shown further down that dog's page).
+- **Testimonials** — quotes for `/testimonials`, with a "feature on homepage" toggle for the one shown in the pull-quote band.
+- **Gallery Photos** — the photo grid for `/gallery`, one entry per photo.
+- **Video Hub** — embeds for `/videos` (paste a YouTube/Vimeo embed URL).
+- **Journal Posts** — posts for `/journal` (this section is called "Journal" to visitors, "Journal Posts" here).
 - **Events** — working days and community events for `/events`.
-- **Policies** — long-form pages (training methods, terms & conditions) linked from the footer.
+- **Policy Pages** — long-form pages (training methods, terms & conditions) linked from the footer under "Legal".
 - **FAQs** — question/answer pairs for `/faq`, also emitted as structured data so they can surface directly in search results.
 
+Every image field in the Studio has a short description under its label explaining exactly which page and position it fills — hover or look just under the field title if you're not sure where a photo will appear. A few optional photo fields (testimonial photos, event photos) are defined but not yet wired into the page design — their descriptions say so explicitly.
+
 Until an entry exists, its section falls back to placeholder content (marked clearly as such) so the site never looks broken or empty.
+
+### Where do I add a photo?
+
+| I want a photo on… | Go to… |
+| --- | --- |
+| The header/menu logo | **Site Settings** → **Branding & SEO** tab → *Logo* |
+| The homepage banner section (top) | Not photo-based by design — text only |
+| The homepage "Philosophy" section | **Site Settings** → **Homepage: Philosophy** tab → *Photo (optional)* — leave empty to keep the logo mark shown there |
+| The homepage banner near the bottom | **Site Settings** → **Homepage: Booking Banner** tab → *Photo (optional)* |
+| A specific class/service page | **Classes & Services** → open that class → *Photo* |
+| The Our Dogs page / a dog's page | **Dogs** → open that dog → *Main photo* and *Additional photos* |
+| The About page | **About Page (Trainer Profile)** → *Photo* |
+| The Gallery page | **Gallery Photos** → add a new entry per photo |
+| A Journal post | **Journal Posts** → open that post → *Cover image* |
+| Social share previews (link previews) | **Site Settings** → **Branding & SEO** tab → *Default social-share image* |
 
 ## 4. SEO & GEO (AI search) foundation
 

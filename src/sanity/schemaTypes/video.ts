@@ -2,8 +2,9 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'video',
-  title: 'Video',
+  title: 'Video Hub',
   type: 'document',
+  description: 'Powers the "Video Hub" page (/videos) — one entry per video.',
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({

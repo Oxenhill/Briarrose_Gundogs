@@ -2,8 +2,9 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'post',
-  title: 'Blog Post',
+  title: 'Journal Posts',
   type: 'document',
+  description: 'Powers the "Journal" page (/journal) — called "Blog" in some places behind the scenes, but shown to visitors as "Journal".',
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({
@@ -19,6 +20,7 @@ export default defineType({
       title: 'Cover image',
       type: 'image',
       options: { hotspot: true },
+      description: 'Shown on the Journal listing page and at the top of this post\'s own page.',
     }),
     defineField({
       name: 'body',
