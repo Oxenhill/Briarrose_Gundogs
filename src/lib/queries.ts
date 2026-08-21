@@ -54,13 +54,21 @@ export function getDogBySlug(slug: string) {
   )
 }
 
+// `approved != false` (rather than `approved == true`) so testimonials added
+// before this field existed — which have no `approved` value at all — still
+// show up; only an explicit `false` (client-submitted, not yet reviewed) is
+// hidden.
 export function getTestimonials() {
-  return sanityFetch(`*[_type == "testimonial"] | order(order asc)`, {}, fallbackTestimonials)
+  return sanityFetch(
+    `*[_type == "testimonial" && approved != false] | order(order asc)`,
+    {},
+    fallbackTestimonials
+  )
 }
 
 export function getFeaturedTestimonial() {
   return sanityFetch(
-    `*[_type == "testimonial" && featured == true] | order(order asc)[0]`,
+    `*[_type == "testimonial" && featured == true && approved != false] | order(order asc)[0]`,
     {},
     fallbackTestimonials[0] ?? null
   )

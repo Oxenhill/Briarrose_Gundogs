@@ -19,6 +19,11 @@ const AI_CRAWLERS = [
   'Meta-ExternalAgent',
 ]
 
+// The private testimonial submission page (see the "Testimonials" section
+// of the Studio for the link) isn't linked from anywhere on the site, but
+// is disallowed here too as a second layer, in case it's ever discovered.
+const DISALLOW = ['/studio', '/api', '/testimonials/submit']
+
 export default function robots(): MetadataRoute.Robots {
   const base = siteUrl()
   return {
@@ -26,12 +31,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/studio', '/api'],
+        disallow: DISALLOW,
       },
       ...AI_CRAWLERS.map((agent) => ({
         userAgent: agent,
         allow: '/',
-        disallow: ['/studio', '/api'],
+        disallow: DISALLOW,
       })),
     ],
     sitemap: `${base}/sitemap.xml`,

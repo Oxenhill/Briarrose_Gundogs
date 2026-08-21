@@ -165,6 +165,8 @@ export const fallbackTestimonials: {
   location: string | undefined
   dogName: string | undefined
   photo: SanityImage
+  source: string | undefined
+  sourceUrl: string | undefined
   featured: boolean
   order: number
 }[] = [
@@ -175,6 +177,8 @@ export const fallbackTestimonials: {
     location: 'Location',
     dogName: undefined,
     photo: null,
+    source: undefined,
+    sourceUrl: undefined,
     featured: true,
     order: 1,
   },

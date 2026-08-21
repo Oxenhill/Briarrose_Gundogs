@@ -45,6 +45,17 @@ export default async function TestimonialsPage() {
                 {t.location ? ` · ${t.location}` : ''}
                 {t.dogName ? ` · with ${t.dogName}` : ''}
               </cite>
+              {t.source && (
+                <div style={{ marginTop: 6, fontSize: 11.5, color: 'var(--ink-soft)' }}>
+                  {t.sourceUrl ? (
+                    <a href={t.sourceUrl} target="_blank" rel="noopener noreferrer">
+                      via {t.source} ↗
+                    </a>
+                  ) : (
+                    <span>via {t.source}</span>
+                  )}
+                </div>
+              )}
             </blockquote>
           ))}
         </div>
