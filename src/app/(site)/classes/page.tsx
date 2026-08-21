@@ -14,14 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ClassesPage() {
-  const classes = await getClasses()
+  const [classes, site] = await Promise.all([getClasses(), getSiteSettings()])
 
   return (
     <>
       <PageHero
-        eyebrow="Classes & Services"
-        heading="Training built around your dog"
-        body="Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code."
+        eyebrow={site.classesPageEyebrow || 'Classes & Services'}
+        heading={site.classesPageHeading || 'Training built around your dog'}
+        body={
+          site.classesPageBody ||
+          'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.'
+        }
       />
       <section className="list-section" style={{ paddingTop: 0 }}>
         <div className="container">

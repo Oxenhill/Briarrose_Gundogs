@@ -26,11 +26,15 @@ function formatDateTime(iso: string | undefined) {
 }
 
 export default async function EventsPage() {
-  const events = await getEvents()
+  const [events, site] = await Promise.all([getEvents(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Community" heading="Working days & events" />
+      <PageHero
+        eyebrow={site.eventsPageEyebrow || 'Community'}
+        heading={site.eventsPageHeading || 'Working days & events'}
+        body={site.eventsPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         {events.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>

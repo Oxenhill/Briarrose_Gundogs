@@ -80,11 +80,11 @@ export default async function HomePage() {
       <section className="list-section">
         <div className="container">
           <div className="list-head" data-reveal="">
-            <span className="eyebrow">Classes &amp; Services</span>
-            <h2>Training built around your dog</h2>
+            <span className="eyebrow">{site.homeClassesEyebrow || 'Classes & Services'}</span>
+            <h2>{site.homeClassesHeading || 'Training built around your dog'}</h2>
             <p>
-              Every class below is managed from the CMS — add, reorder, or retire one any time
-              without touching code.
+              {site.homeClassesBody ||
+                'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.'}
             </p>
           </div>
           <div>
@@ -110,7 +110,7 @@ export default async function HomePage() {
 
       <SplitSection
         reverse
-        eyebrow="Get Started"
+        eyebrow={site.ctaEyebrow || 'Get Started'}
         heading={site.ctaHeadline}
         body={site.ctaBody}
         cta={

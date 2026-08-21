@@ -22,7 +22,41 @@ export default defineType({
     { name: 'contact', title: 'Contact Details' },
     { name: 'social', title: 'Social Links' },
     { name: 'newsletter', title: 'Newsletter & Footer' },
+    {
+      name: 'pageHeaders',
+      title: 'Page Headers',
+      // Every page that lists something (Classes, Dogs, Testimonials, etc)
+      // has a small label + headline at the top — this tab is the ONE place
+      // all of those live, one collapsible section per page, each titled
+      // with the exact page it controls. If you're looking for text and
+      // can't find it, it's very likely here.
+    },
     { name: 'seo', title: 'Branding & SEO' },
+  ],
+  // One fieldset per page keeps this tab navigable even with ~10 pages'
+  // worth of headers in it — each collapses to just its page name until
+  // opened, and every field title below repeats that page name too, so
+  // it's obvious which page a field controls whether the section is
+  // collapsed or open.
+  fieldsets: [
+    {
+      name: 'homeClasses',
+      title: 'Homepage — "Classes & Services" section',
+      options: { collapsible: true, collapsed: true },
+    },
+    { name: 'classesPage', title: 'Classes Page (the full /classes page)', options: { collapsible: true, collapsed: true } },
+    { name: 'dogsPage', title: 'Dogs Page (/dogs)', options: { collapsible: true, collapsed: true } },
+    {
+      name: 'testimonialsPage',
+      title: 'Testimonials Page (/testimonials)',
+      options: { collapsible: true, collapsed: true },
+    },
+    { name: 'galleryPage', title: 'Gallery Page (/gallery)', options: { collapsible: true, collapsed: true } },
+    { name: 'videosPage', title: 'Video Hub Page (/videos)', options: { collapsible: true, collapsed: true } },
+    { name: 'journalPage', title: 'Journal Page (/journal)', options: { collapsible: true, collapsed: true } },
+    { name: 'faqPage', title: 'FAQ Page (/faq)', options: { collapsible: true, collapsed: true } },
+    { name: 'eventsPage', title: 'Events Page (/events)', options: { collapsible: true, collapsed: true } },
+    { name: 'contactPage', title: 'Contact Page (/contact)', options: { collapsible: true, collapsed: true } },
   ],
   fields: [
     defineField({
@@ -105,6 +139,14 @@ export default defineType({
     }),
 
     // --- Homepage: Booking banner -------------------------------------------
+    defineField({
+      name: 'ctaEyebrow',
+      title: 'Small label above the headline',
+      type: 'string',
+      group: 'cta',
+      description: 'Shown above the headline in the banner near the bottom of the homepage.',
+      initialValue: 'Get Started',
+    }),
     defineField({
       name: 'ctaHeadline',
       title: 'Headline',
@@ -238,6 +280,279 @@ export default defineType({
       group: 'newsletter',
       description: 'Shown bottom-left of the footer on every page, e.g. a copyright line.',
       initialValue: '© Briarrose Gundogs',
+    }),
+
+    // --- Page Headers ---------------------------------------------------------
+    // Every one of these controls the small-label + headline (+ optional
+    // supporting line) at the very top of one specific page — the part that
+    // was previously hardcoded in the site's code and impossible to find or
+    // edit here. Each one is independent of the others, even where two
+    // happen to say similar things (e.g. the homepage's "Classes & Services"
+    // teaser vs. the full /classes page's own header just below it).
+    defineField({
+      name: 'homeClassesEyebrow',
+      title: 'Homepage classes section — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      description:
+        'Shown on the HOMEPAGE, above the row of classes partway down the page — NOT the same as the Classes Page header below (that\'s a separate, full page of its own at /classes).',
+      initialValue: 'Classes & Services',
+    }),
+    defineField({
+      name: 'homeClassesHeading',
+      title: 'Homepage classes section — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      initialValue: 'Training built around your dog',
+    }),
+    defineField({
+      name: 'homeClassesBody',
+      title: 'Homepage classes section — supporting line',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      initialValue:
+        'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.',
+    }),
+
+    defineField({
+      name: 'classesPageEyebrow',
+      title: 'Classes page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'classesPage',
+      description:
+        'Shown at the very top of the full /classes page (what "View Classes" links to) — separate from the homepage teaser above.',
+      initialValue: 'Classes & Services',
+    }),
+    defineField({
+      name: 'classesPageHeading',
+      title: 'Classes page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'classesPage',
+      initialValue: 'Training built around your dog',
+    }),
+    defineField({
+      name: 'classesPageBody',
+      title: 'Classes page — supporting line',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'classesPage',
+      initialValue:
+        'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.',
+    }),
+
+    defineField({
+      name: 'dogsPageEyebrow',
+      title: 'Dogs page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'dogsPage',
+      description: 'Shown at the top of the /dogs page.',
+      initialValue: 'Our Dogs',
+    }),
+    defineField({
+      name: 'dogsPageHeading',
+      title: 'Dogs page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'dogsPage',
+      initialValue: 'The dogs behind the training',
+    }),
+    defineField({
+      name: 'dogsPageBody',
+      title: 'Dogs page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'dogsPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'testimonialsPageEyebrow',
+      title: 'Testimonials page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'testimonialsPage',
+      description: 'Shown at the top of the /testimonials page.',
+      initialValue: 'Testimonials',
+    }),
+    defineField({
+      name: 'testimonialsPageHeading',
+      title: 'Testimonials page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'testimonialsPage',
+      initialValue: 'What handlers say',
+    }),
+    defineField({
+      name: 'testimonialsPageBody',
+      title: 'Testimonials page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'testimonialsPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'galleryPageEyebrow',
+      title: 'Gallery page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'galleryPage',
+      description: 'Shown at the top of the /gallery page.',
+      initialValue: 'Gallery',
+    }),
+    defineField({
+      name: 'galleryPageHeading',
+      title: 'Gallery page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'galleryPage',
+      initialValue: 'Training, puppies & working days',
+    }),
+    defineField({
+      name: 'galleryPageBody',
+      title: 'Gallery page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'galleryPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'videosPageEyebrow',
+      title: 'Video Hub page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'videosPage',
+      description: 'Shown at the top of the /videos page.',
+      initialValue: 'Video Hub',
+    }),
+    defineField({
+      name: 'videosPageHeading',
+      title: 'Video Hub page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'videosPage',
+      initialValue: 'Watch the training in action',
+    }),
+    defineField({
+      name: 'videosPageBody',
+      title: 'Video Hub page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'videosPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'journalPageEyebrow',
+      title: 'Journal page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'journalPage',
+      description: 'Shown at the top of the /journal listing page (not on individual posts — those use their own title).',
+      initialValue: 'Journal',
+    }),
+    defineField({
+      name: 'journalPageHeading',
+      title: 'Journal page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'journalPage',
+      initialValue: 'Notes from the field',
+    }),
+    defineField({
+      name: 'journalPageBody',
+      title: 'Journal page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'journalPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'faqPageEyebrow',
+      title: 'FAQ page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'faqPage',
+      description: 'Shown at the top of the /faq page.',
+      initialValue: 'FAQ',
+    }),
+    defineField({
+      name: 'faqPageHeading',
+      title: 'FAQ page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'faqPage',
+      initialValue: 'Common questions',
+    }),
+    defineField({
+      name: 'faqPageBody',
+      title: 'FAQ page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'faqPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'eventsPageEyebrow',
+      title: 'Events page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'eventsPage',
+      description: 'Shown at the top of the /events page.',
+      initialValue: 'Community',
+    }),
+    defineField({
+      name: 'eventsPageHeading',
+      title: 'Events page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'eventsPage',
+      initialValue: 'Working days & events',
+    }),
+    defineField({
+      name: 'eventsPageBody',
+      title: 'Events page — supporting line (optional)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'eventsPage',
+      description: 'Leave empty for no supporting line under the headline (this is how the page looks today).',
+    }),
+
+    defineField({
+      name: 'contactPageEyebrow',
+      title: 'Contact page — small label',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'contactPage',
+      description:
+        'Shown at the top of the /contact page, above the enquiry form. (The line under the headline there is your Coverage area description, set under the Contact Details tab — not repeated here.)',
+      initialValue: 'Get in Touch',
+    }),
+    defineField({
+      name: 'contactPageHeading',
+      title: 'Contact page — headline',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'contactPage',
+      initialValue: "Let's talk about your dog",
     }),
 
     // --- Branding & SEO -----------------------------------------------------

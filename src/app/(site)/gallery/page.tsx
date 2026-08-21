@@ -15,11 +15,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GalleryPage() {
-  const items = await getGallery()
+  const [items, site] = await Promise.all([getGallery(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Gallery" heading="Training, puppies & working days" />
+      <PageHero
+        eyebrow={site.galleryPageEyebrow || 'Gallery'}
+        heading={site.galleryPageHeading || 'Training, puppies & working days'}
+        body={site.galleryPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         {items.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>

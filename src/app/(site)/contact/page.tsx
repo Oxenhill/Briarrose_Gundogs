@@ -20,7 +20,11 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageHero eyebrow="Get in Touch" heading="Let's talk about your dog" body={site.coverageArea} />
+      <PageHero
+        eyebrow={site.contactPageEyebrow || 'Get in Touch'}
+        heading={site.contactPageHeading || "Let's talk about your dog"}
+        body={site.coverageArea}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         <div
           className="about-grid"

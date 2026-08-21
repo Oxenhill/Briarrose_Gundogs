@@ -15,11 +15,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function VideosPage() {
-  const videos = await getVideos()
+  const [videos, site] = await Promise.all([getVideos(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Video Hub" heading="Watch the training in action" />
+      <PageHero
+        eyebrow={site.videosPageEyebrow || 'Video Hub'}
+        heading={site.videosPageHeading || 'Watch the training in action'}
+        body={site.videosPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         {videos.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>

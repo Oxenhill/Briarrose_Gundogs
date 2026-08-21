@@ -21,11 +21,15 @@ function formatDate(iso: string | undefined) {
 }
 
 export default async function JournalPage() {
-  const posts = await getPosts()
+  const [posts, site] = await Promise.all([getPosts(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Journal" heading="Notes from the field" />
+      <PageHero
+        eyebrow={site.journalPageEyebrow || 'Journal'}
+        heading={site.journalPageHeading || 'Notes from the field'}
+        body={site.journalPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         {posts.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>

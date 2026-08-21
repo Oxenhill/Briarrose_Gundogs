@@ -12,11 +12,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DogsPage() {
-  const dogs = await getDogs()
+  const [dogs, site] = await Promise.all([getDogs(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Our Dogs" heading="The dogs behind the training" />
+      <PageHero
+        eyebrow={site.dogsPageEyebrow || 'Our Dogs'}
+        heading={site.dogsPageHeading || 'The dogs behind the training'}
+        body={site.dogsPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         <div
           style={{

@@ -13,11 +13,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TestimonialsPage() {
-  const testimonials = await getTestimonials()
+  const [testimonials, site] = await Promise.all([getTestimonials(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="Testimonials" heading="What handlers say" />
+      <PageHero
+        eyebrow={site.testimonialsPageEyebrow || 'Testimonials'}
+        heading={site.testimonialsPageHeading || 'What handlers say'}
+        body={site.testimonialsPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120 }}>
         <div style={{ display: 'grid', gap: 56, maxWidth: 780, margin: '0 auto' }}>
           {testimonials.map((t) => (

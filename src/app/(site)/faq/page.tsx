@@ -14,11 +14,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function FaqPage() {
-  const faqs = await getFaqs()
+  const [faqs, site] = await Promise.all([getFaqs(), getSiteSettings()])
 
   return (
     <>
-      <PageHero eyebrow="FAQ" heading="Common questions" />
+      <PageHero
+        eyebrow={site.faqPageEyebrow || 'FAQ'}
+        heading={site.faqPageHeading || 'Common questions'}
+        body={site.faqPageBody}
+      />
       <section className="container" style={{ paddingBottom: 120, maxWidth: 760 }}>
         <div>
           {faqs.map((faq) => (
