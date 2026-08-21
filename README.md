@@ -39,11 +39,34 @@ NEXT_PUBLIC_SITE_URL=https://briarrose-gundogs.vercel.app
 
 These live in two places, both already set: the `.env.local` file in this folder (for local dev — gitignored, never committed), and the Vercel project's Environment Variables (for the live site). If you ever move to a different Sanity project, update both, plus add the new domain as a CORS origin under the Sanity project's API settings (`sanity.io/manage` → your project → API → CORS origins) — without that, the Studio won't be able to load data from the new origin.
 
-## 3. Editing content
+## 3. Email & instant content updates
+
+Three optional pieces of setup, all free at this site's scale, none requiring Claude/any developer to touch code again once configured:
+
+**Contact form emails & the newsletter list.** Enquiries from `/contact` and signups from the "Stay in the loop" footer form are sent/saved via [Resend](https://resend.com) (free tier: 3,000 emails/month, no card required) and a write-enabled Sanity connection. Without these, both forms still work but only log to Vercel's server logs — nobody sees the submission.
+
+1. Create a free account at [resend.com](https://resend.com) and generate an API key (Dashboard → API Keys).
+2. In Vercel → this project → Settings → Environment Variables, add `RESEND_API_KEY` with that key.
+3. Optional: verify `briarrosegundogs.co.uk` in Resend (Dashboard → Domains — adds a couple of DNS records at your domain registrar) so emails send from your own address; then set `RESEND_FROM_EMAIL` to e.g. `Briarrose Gundogs <enquiries@briarrosegundogs.co.uk>`. Skip this and it sends from Resend's shared address instead — works immediately, no DNS needed.
+4. At [sanity.io/manage](https://www.sanity.io/manage) → this project → API → Tokens, create a token with **Editor** permissions. Add it to Vercel as `SANITY_API_WRITE_TOKEN`.
+5. Add the same two variables (plus the one below) to your local `.env.local` if you also run the site locally.
+
+**Instant Studio updates.** Every page already refreshes on its own within about a minute of a Studio publish. This webhook makes it near-instant and reliable instead of waiting on that timer:
+
+1. Pick any secret value (a password generator output works fine — it's a shared value between Sanity and this site, not a login credential).
+2. In Vercel, add it as `SANITY_REVALIDATE_SECRET`.
+3. At [sanity.io/manage](https://www.sanity.io/manage) → this project → API → Webhooks → **Create webhook**:
+   - URL: `https://briarrosegundogs.co.uk/api/revalidate?secret=<the same value>`
+   - Dataset: `production`
+   - Trigger on: Create, Update, Delete
+   - HTTP method: `POST`
+4. Save. From then on, every publish updates the live site within a few seconds.
+
+## 4. Editing content
 
 Everything lives under `/studio`, organised into sections. Each section's name in the Studio sidebar matches the page it powers:
 
-- **Site Settings** (singleton, at the top of the sidebar) — everything that isn't tied to a specific class, dog, or post: homepage text, contact details, social links, newsletter copy, footer text, and default SEO. Because this one document covers so much, it's split into tabs across the top of the editing screen — **General**, **Homepage: Hero**, **Homepage: Philosophy**, **Homepage: Booking Banner**, **Contact Details**, **Social Links**, **Newsletter & Footer**, and **Branding & SEO**. Your phone number and email address are under the **Contact Details** tab; your logo is under **Branding & SEO**.
+- **Site Settings** (singleton, at the top of the sidebar) — everything that isn't tied to a specific class, dog, or post: homepage text, contact details, social links, newsletter copy, footer text, and default SEO. Because this one document covers so much, it's split into tabs across the top of the editing screen — **General**, **Homepage: Hero**, **Homepage: Philosophy**, **Homepage: Booking Banner**, **Contact Details**, **Social Links**, **Newsletter & Footer**, and **Branding & SEO**. Your phone number and email address are under the **Contact Details** tab, along with **"Where enquiries are sent"** — the inbox that gets a copy of every Contact page submission (falls back to the Email address above if left blank); your logo is under **Branding & SEO**.
 - **About Page (Trainer Profile)** (singleton) — name, job title, photo, bio, credentials — powers `/about`.
 - **Classes & Services** — one entry per class or service. Title, slug, summary, full description, stage/age label, price, an optional per-class **booking link** (see below), an optional **location** (see below), photo, display order, and an "active" toggle to hide a class without deleting it. The photo on each entry shows on that class's own page (not the summary list). These automatically appear in the homepage list, the scrolling marquee, the `/classes` page, `llms.txt`, and the sitemap — add, edit, reorder, or retire a class here and it updates everywhere.
 - **Locations** — one entry per training venue: name, address, postcode, an optional Google Maps link, and optional notes (parking/access). Pick a location on any Classes & Services entry that runs there — edit the venue once here and it updates on every class held at that venue. Not yet linked from its own page; for now it only shows through the classes that reference it.
@@ -55,6 +78,7 @@ Everything lives under `/studio`, organised into sections. Each section's name i
 - **Events** — working days and community events for `/events`.
 - **Policy Pages** — long-form pages (training methods, terms & conditions) linked from the footer under "Legal".
 - **FAQs** — question/answer pairs for `/faq`, also emitted as structured data so they can surface directly in search results.
+- **Newsletter Signups** — created automatically when someone uses the "Stay in the loop" footer form; not something you add by hand. This is your subscriber list — each entry shows the email and whether that person has since unsubscribed (every signup email includes a self-service unsubscribe link, so this stays accurate without any admin work). Requires the email/write setup described in "Email & instant content updates" below — until then, signups aren't saved anywhere.
 
 Every "Book" button site-wide (nav bar, homepage, contact page) links to the global **Booking link** in Site Settings → General. A class's own page uses that same global link too, *unless* you fill in a **Booking link** on that specific Classes & Services entry — if you do, that class's page and "Book This Class" button use its own Dog Smart share link instead. Leave a class's booking link empty to keep it on the global one.
 
@@ -100,7 +124,7 @@ Shooting or selecting photos in roughly the right shape to begin with means less
 
 None of this is a hard requirement — any photo can be uploaded and it'll still display — but starting from roughly the right shape (or adjusting the crop tool afterwards) means nothing important gets cropped out.
 
-## 4. SEO & GEO (AI search) foundation
+## 5. SEO & GEO (AI search) foundation
 
 Already wired in and needing no maintenance:
 
@@ -111,7 +135,7 @@ Already wired in and needing no maintenance:
 
 If you change the domain, update `NEXT_PUBLIC_SITE_URL` in both `.env.local` and Vercel's Environment Variables — every canonical URL, sitemap entry, and structured-data reference uses it automatically.
 
-## 5. Deploying
+## 6. Deploying
 
 The project is connected to Vercel — pushing to the repository's `main` branch deploys automatically. The live site is currently at [briarrose-gundogs.vercel.app](https://briarrose-gundogs.vercel.app). Once you register a custom domain, add it in the Vercel project's Domains settings, then update `NEXT_PUBLIC_SITE_URL` (both places, as above) and add it as a Sanity CORS origin (also as above) so the Studio keeps working on the new address.
 

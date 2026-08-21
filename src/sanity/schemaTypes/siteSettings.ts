@@ -149,6 +149,15 @@ export default defineType({
       initialValue: 'placeholder@briarrosegundogs.co.uk',
     }),
     defineField({
+      name: 'enquiryNotificationEmail',
+      title: 'Where enquiries are sent',
+      type: 'string',
+      group: 'contact',
+      description:
+        'The inbox that receives a copy of every submission from the Contact page enquiry form. Leave empty to use the Email address above instead.',
+      initialValue: 'oliver@briarrosegundogs.co.uk',
+    }),
+    defineField({
       name: 'addressLocality',
       title: 'Town / locality',
       type: 'string',

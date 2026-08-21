@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server'
+import { getSiteSettings } from '@/lib/queries'
+import { sendEmail } from '@/lib/email'
 
 /**
  * Contact form endpoint.
  *
- * Placeholder implementation — logs the submission so the form works
- * end-to-end today. Swap the body of this handler for a real email
- * provider (Resend, Postmark, etc.) once one is chosen; nothing else in
- * the app needs to change.
+ * Emails the submission to Site Settings → Contact Details →
+ * "Where enquiries are sent" (falling back to the main Email address if
+ * that's blank) via Resend — see src/lib/email.ts. Until RESEND_API_KEY is
+ * set, sending is skipped and the submission is only logged, same as
+ * before, so the form keeps working either way.
  */
 export async function POST(request: Request) {
   try {
@@ -17,6 +20,20 @@ export async function POST(request: Request) {
     }
 
     console.log('[contact] enquiry received:', { name, email, dogName, message })
+
+    const site = await getSiteSettings()
+    const recipient = site.enquiryNotificationEmail || site.email
+
+    if (recipient) {
+      await sendEmail({
+        to: recipient,
+        subject: `New enquiry from ${name}`,
+        text: [`Name: ${name}`, `Email: ${email}`, dogName ? `Dog's name: ${dogName}` : null, '', message]
+          .filter(Boolean)
+          .join('\n'),
+        replyTo: email,
+      })
+    }
 
     return NextResponse.json({ ok: true })
   } catch {

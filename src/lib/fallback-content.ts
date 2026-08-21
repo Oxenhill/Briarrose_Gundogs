@@ -35,6 +35,7 @@ export const fallbackSiteSettings = {
   bookingUrl: '#',
   phone: '07000 000000',
   email: 'placeholder@briarrosegundogs.co.uk',
+  enquiryNotificationEmail: 'oliver@briarrosegundogs.co.uk',
   addressLocality: 'Sevenoaks',
   addressRegion: 'Kent',
   coverageArea: 'Covering Sevenoaks and the Kent Weald',
