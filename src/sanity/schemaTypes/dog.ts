@@ -22,14 +22,16 @@ export default defineType({
       title: 'Main photo',
       type: 'image',
       options: { hotspot: true },
-      description: 'Shown on the "Our Dogs" grid and at the top of this dog\'s own page.',
+      description:
+        'Shown on the "Our Dogs" grid and at the top of this dog\'s own page, displayed landscape (4:3). Click the photo after uploading to drag the crop tool if an edge gets cut off — useful for group photos. Any photo works, but a horizontal (landscape) shot fits best; a portrait photo will have its top and bottom trimmed.',
     }),
     defineField({
       name: 'gallery',
       title: 'Additional photos',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Extra photos shown below the main photo on this dog\'s individual page.',
+      description:
+        'Extra photos shown below the main photo on this dog\'s individual page, displayed landscape (4:3) — same crop tool available on each one.',
     }),
     defineField({
       name: 'order',

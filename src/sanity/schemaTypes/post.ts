@@ -20,7 +20,8 @@ export default defineType({
       title: 'Cover image',
       type: 'image',
       options: { hotspot: true },
-      description: 'Shown on the Journal listing page and at the top of this post\'s own page.',
+      description:
+        'Shown on the Journal listing page and at the top of this post\'s own page, displayed landscape. A horizontal (landscape) photo fits best. Click the photo after uploading to drag the crop tool if it\'s cutting off something important.',
     }),
     defineField({
       name: 'body',

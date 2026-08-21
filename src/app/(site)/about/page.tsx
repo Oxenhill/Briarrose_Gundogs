@@ -18,7 +18,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const [trainer, site] = await Promise.all([getTrainerProfile(), getSiteSettings()])
-  const photoUrl = trainer.photo ? urlForImage(trainer.photo).width(900).height(1100).url() : null
+  // Matches the 4:5 aspect ratio of the box it's displayed in (see below) —
+  // and requested well above the box's on-screen size so retina/high-DPI
+  // screens never have to upscale a too-small source image.
+  const photoUrl = trainer.photo ? urlForImage(trainer.photo).width(1300).height(1625).url() : null
 
   return (
     <>
@@ -36,7 +39,14 @@ export default async function AboutPage() {
         >
           {photoUrl ? (
             <div style={{ position: 'relative', aspectRatio: '4/5' }}>
-              <Image src={photoUrl} alt={trainer.name} fill style={{ objectFit: 'cover' }} />
+              <Image
+                src={photoUrl}
+                alt={trainer.name}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 900px) 100vw, 45vw"
+                priority
+              />
             </div>
           ) : (
             <div className="frame ph-texture" style={{ aspectRatio: '4/5' }}>

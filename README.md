@@ -74,6 +74,29 @@ Until an entry exists, its section falls back to placeholder content (marked cle
 | A Journal post | **Journal Posts** → open that post → *Cover image* |
 | Social share previews (link previews) | **Site Settings** → **Branding & SEO** tab → *Default social-share image* |
 
+### Cropping photos, and what shape works best
+
+Every photo slot on the site displays photos at a specific shape (landscape, portrait, or square) — if your photo isn't already that shape, it gets automatically cropped to fit, centred by default. For a photo where the centre crop cuts off something you want kept in frame (a group shot, for example), you can fix it yourself:
+
+1. In the Studio, click the photo thumbnail on the field you want to fix.
+2. A crop/hotspot tool opens over the image — drag the circular marker (or resize the crop box) onto the part of the photo you want kept in frame.
+3. Close the editor and publish — the live site picks it up within about a minute.
+
+Shooting or selecting photos in roughly the right shape to begin with means less cropping is needed. Rough guide:
+
+| Photo | Shape | Notes |
+| --- | --- | --- |
+| Logo (Site Settings → Branding & SEO) | Tall portrait (~4:5) | Include the wordmark text — it's shown large, not as a small badge |
+| Dog main photo & additional photos | Landscape (4:3) | Group photos work well here — nothing forced to a tight square |
+| Class/service photo | Wide landscape (16:9) | |
+| Trainer photo (About page) | Tall portrait (~4:5) | |
+| Homepage Philosophy / Booking Banner photos | Tall portrait (~4:5) | |
+| Gallery photo | Square (1:1) | The one spot on the site that stays square — use the crop tool for group or wide shots |
+| Journal cover image | Landscape | Shown a little differently-cropped on the listing vs. the post itself, both landscape |
+| Default social-share image | Wide landscape (1200×630px) | Only seen when a page is shared on social media, not on the site itself |
+
+None of this is a hard requirement — any photo can be uploaded and it'll still display — but starting from roughly the right shape (or adjusting the crop tool afterwards) means nothing important gets cropped out.
+
 ## 4. SEO & GEO (AI search) foundation
 
 Already wired in and needing no maintenance:

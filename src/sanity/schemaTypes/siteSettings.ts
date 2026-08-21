@@ -101,7 +101,7 @@ export default defineType({
       options: { hotspot: true },
       group: 'philosophy',
       description:
-        'A real photo (of you, your dogs, or your grounds) for this homepage section. If left empty, the logo mark is shown here instead.',
+        'A real photo (of you, your dogs, or your grounds) for this homepage section, displayed as a tall portrait panel (roughly 4:5). If left empty, the logo mark is shown here instead. Click the photo after uploading to drag the crop tool if it\'s cutting off something important.',
     }),
 
     // --- Homepage: Booking banner -------------------------------------------
@@ -128,7 +128,7 @@ export default defineType({
       options: { hotspot: true },
       group: 'cta',
       description:
-        'A photo for this banner. If left empty, a soft placeholder panel is shown instead — add a photo here to replace it.',
+        'A photo for this banner, displayed as a tall portrait panel (roughly 4:5). If left empty, a soft placeholder panel is shown instead — add a photo here to replace it. Click the photo after uploading to drag the crop tool if it\'s cutting off something important.',
     }),
 
     // --- Contact details -----------------------------------------------------
@@ -236,17 +236,19 @@ export default defineType({
       name: 'logo',
       title: 'Logo',
       type: 'image',
+      options: { hotspot: true },
       group: 'seo',
       description:
-        'Shown in the site header/navigation menu on every page. Upload the full logo, including any wordmark text — it is displayed uncropped, not as a small badge. Also used as the default social-share image if no separate one is set below.',
+        'Shown in the site header/navigation menu on every page, displayed as a tall portrait shape (roughly 4:5). Upload the full logo, including any wordmark text — it is shown large, not as a small badge. Also used as the default social-share image if no separate one is set below. Click the photo after uploading to drag the crop tool if it needs adjusting.',
     }),
     defineField({
       name: 'ogImage',
       title: 'Default social-share image',
       type: 'image',
+      options: { hotspot: true },
       group: 'seo',
       description:
-        'The preview image shown when a page is shared on Facebook, X, WhatsApp, etc. — used only for pages that don\'t have their own photo. Falls back to the Logo above if left empty. Recommended size: 1200×630px, landscape.',
+        'The preview image shown when a page is shared on Facebook, X, WhatsApp, etc. — used only for pages that don\'t have their own photo. Falls back to the Logo above if left empty. Displayed landscape — recommended size: 1200×630px.',
     }),
     defineField({
       name: 'seoDefaultTitle',

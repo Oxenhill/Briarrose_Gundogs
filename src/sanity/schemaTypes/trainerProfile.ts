@@ -16,7 +16,8 @@ export default defineType({
       title: 'Photo',
       type: 'image',
       options: { hotspot: true },
-      description: 'Shown alongside your bio on the About page.',
+      description:
+        'Shown alongside your bio on the About page, displayed as a tall portrait (roughly 4:5). Click the photo after uploading to drag the crop tool if it\'s cutting off something important.',
     }),
     defineField({
       name: 'bio',

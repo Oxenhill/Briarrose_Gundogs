@@ -25,7 +25,9 @@ export default defineType({
       name: 'thumbnail',
       title: 'Thumbnail image',
       type: 'image',
-      description: 'Used for the video card and for VideoObject structured data.',
+      options: { hotspot: true },
+      description:
+        'Used for search-engine video listings (not shown directly on the video card, which uses the embedded player itself). A landscape (16:9) photo works best.',
     }),
     defineField({ name: 'publishedAt', title: 'Published date', type: 'datetime' }),
     defineField({ name: 'order', title: 'Display order', type: 'number', initialValue: 0 }),

@@ -26,7 +26,10 @@ export default async function DogsPage() {
           }}
         >
           {dogs.map((dog) => {
-            const photoUrl = dog.photo ? urlForImage(dog.photo).width(600).height(600).url() : null
+            // 4:3 landscape rather than a forced square — phone photos
+            // (especially group shots) are rarely square, and a square crop
+            // was cutting dogs out of the frame on wider photos.
+            const photoUrl = dog.photo ? urlForImage(dog.photo).width(1200).height(900).url() : null
             return (
               <Link
                 key={dog._id}
@@ -34,11 +37,17 @@ export default async function DogsPage() {
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 {photoUrl ? (
-                  <div style={{ position: 'relative', aspectRatio: '1/1', marginBottom: 20 }}>
-                    <Image src={photoUrl} alt={dog.name} fill style={{ objectFit: 'cover' }} />
+                  <div style={{ position: 'relative', aspectRatio: '4/3', marginBottom: 20 }}>
+                    <Image
+                      src={photoUrl}
+                      alt={dog.name}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
                   </div>
                 ) : (
-                  <div className="frame ph-texture" style={{ aspectRatio: '1/1', marginBottom: 20 }}>
+                  <div className="frame ph-texture" style={{ aspectRatio: '4/3', marginBottom: 20 }}>
                     <span className="tag">Photography placeholder</span>
                   </div>
                 )}

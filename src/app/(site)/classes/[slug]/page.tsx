@@ -31,7 +31,9 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
 
   if (!item) notFound()
 
-  const imageUrl = item.image ? urlForImage(item.image).width(1200).height(800).url() : null
+  // Matches the 16:9 box below exactly (was 3:2, which forced a second,
+  // uncoordinated crop in the browser on top of Sanity's own crop).
+  const imageUrl = item.image ? urlForImage(item.image).width(2000).height(1125).url() : null
 
   return (
     <>
@@ -40,7 +42,14 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
       <section className="container" style={{ paddingBottom: 100 }}>
         {imageUrl ? (
           <div style={{ position: 'relative', aspectRatio: '16/9', marginBottom: 48 }}>
-            <Image src={imageUrl} alt={item.title} fill style={{ objectFit: 'cover' }} />
+            <Image
+              src={imageUrl}
+              alt={item.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 900px) 100vw, 1200px"
+              priority
+            />
           </div>
         ) : (
           <div className="frame ph-texture" style={{ aspectRatio: '16/9', marginBottom: 48 }}>

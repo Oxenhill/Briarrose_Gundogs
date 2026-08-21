@@ -47,7 +47,13 @@ export function SplitSection({
         </div>
       ) : image ? (
         <div className="frame" style={{ position: 'relative' }}>
-          <Image src={image.src} alt={image.alt} fill style={{ objectFit: 'cover' }} />
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 900px) 100vw, 50vw"
+          />
         </div>
       ) : (
         <div className="frame ph-texture">

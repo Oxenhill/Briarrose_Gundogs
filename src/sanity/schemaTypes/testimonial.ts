@@ -14,6 +14,7 @@ export default defineType({
       name: 'photo',
       title: 'Photo (optional)',
       type: 'image',
+      options: { hotspot: true },
       description: 'Not currently shown on the site — reserved for future use.',
     }),
     defineField({

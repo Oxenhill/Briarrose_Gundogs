@@ -34,8 +34,10 @@ export default async function JournalPage() {
         ) : (
           <div style={{ display: 'grid', gap: 48 }}>
             {posts.map((post) => {
+              // Matches the 4:3 box below (was 1.6:1, which forced a second
+              // crop in the browser on top of Sanity's own crop).
               const coverUrl = post.coverImage
-                ? urlForImage(post.coverImage).width(800).height(500).url()
+                ? urlForImage(post.coverImage).width(900).height(675).url()
                 : null
               return (
                 <Link
@@ -52,7 +54,13 @@ export default async function JournalPage() {
                 >
                   {coverUrl ? (
                     <div style={{ position: 'relative', aspectRatio: '4/3' }}>
-                      <Image src={coverUrl} alt={post.title} fill style={{ objectFit: 'cover' }} />
+                      <Image
+                        src={coverUrl}
+                        alt={post.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="280px"
+                      />
                     </div>
                   ) : (
                     <div className="frame ph-texture" style={{ aspectRatio: '4/3' }} />

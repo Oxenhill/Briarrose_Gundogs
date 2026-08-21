@@ -29,7 +29,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const [post, site] = await Promise.all([getPostBySlug(slug), getSiteSettings()])
   if (!post) notFound()
 
-  const coverUrl = post.coverImage ? urlForImage(post.coverImage).width(1400).height(800).url() : null
+  const coverUrl = post.coverImage ? urlForImage(post.coverImage).width(1800).height(1013).url() : null
 
   return (
     <>
@@ -40,7 +40,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <section className="container" style={{ maxWidth: 760, paddingBottom: 100 }}>
         {coverUrl && (
           <div style={{ position: 'relative', aspectRatio: '16/9', marginBottom: 48 }}>
-            <Image src={coverUrl} alt={post.title} fill style={{ objectFit: 'cover' }} />
+            <Image
+              src={coverUrl}
+              alt={post.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 800px) 100vw, 760px"
+              priority
+            />
           </div>
         )}
         <Prose value={post.body} />

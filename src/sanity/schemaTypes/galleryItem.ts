@@ -12,6 +12,8 @@ export default defineType({
       title: 'Photo',
       type: 'image',
       options: { hotspot: true },
+      description:
+        'Displayed square (1:1) in the gallery grid. Click the photo after uploading to drag the crop tool if the automatic centred crop cuts off something important — this matters most for wide or group photos.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

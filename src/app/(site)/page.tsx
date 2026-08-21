@@ -20,10 +20,14 @@ export default async function HomePage() {
     getFeaturedTestimonial(),
   ])
 
+  // These panels stretch tall (the section is 82% of viewport height on
+  // desktop) rather than being square, so a portrait-ish crop fits the
+  // actual box far better than a square one, and the resolution is well
+  // above typical on-screen size so retina screens don't upscale it.
   const philosophyImageUrl = site.philosophyImage
-    ? urlForImage(site.philosophyImage).width(680).height(680).url()
+    ? urlForImage(site.philosophyImage).width(1000).height(1250).url()
     : null
-  const ctaImageUrl = site.ctaImage ? urlForImage(site.ctaImage).width(900).height(1100).url() : null
+  const ctaImageUrl = site.ctaImage ? urlForImage(site.ctaImage).width(1000).height(1250).url() : null
 
   return (
     <>

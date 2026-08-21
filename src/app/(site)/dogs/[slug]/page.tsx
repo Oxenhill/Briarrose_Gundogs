@@ -27,7 +27,11 @@ export default async function DogDetailPage({ params }: { params: Promise<{ slug
   const dog = await getDogBySlug(slug)
   if (!dog) notFound()
 
-  const photoUrl = dog.photo ? urlForImage(dog.photo).width(1200).height(1200).url() : null
+  // Requested at the same 4:3 ratio as the box it's displayed in below —
+  // asking Sanity for a differently-shaped crop than the CSS box means the
+  // browser has to crop it AGAIN to fit, on top of Sanity's own crop, which
+  // is what caused photos to appear over-zoomed/cropped oddly.
+  const photoUrl = dog.photo ? urlForImage(dog.photo).width(2000).height(1500).url() : null
   const gallery = (dog.gallery ?? []).filter((img): img is NonNullable<typeof img> => Boolean(img))
 
   return (
@@ -36,7 +40,14 @@ export default async function DogDetailPage({ params }: { params: Promise<{ slug
       <section className="container" style={{ paddingBottom: 100 }}>
         {photoUrl ? (
           <div style={{ position: 'relative', aspectRatio: '4/3', marginBottom: gallery.length ? 32 : 0 }}>
-            <Image src={photoUrl} alt={dog.name} fill style={{ objectFit: 'cover' }} />
+            <Image
+              src={photoUrl}
+              alt={dog.name}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 900px) 100vw, 1200px"
+              priority
+            />
           </div>
         ) : (
           <div className="frame ph-texture" style={{ aspectRatio: '4/3' }}>
@@ -52,10 +63,19 @@ export default async function DogDetailPage({ params }: { params: Promise<{ slug
             }}
           >
             {gallery.map((img, i) => {
-              const url = urlForImage(img).width(600).height(600).url()
+              // 4:3, same reasoning as the main photo above and the "Our
+              // Dogs" grid — avoids cropping group/landscape shots to a
+              // square.
+              const url = urlForImage(img).width(1000).height(750).url()
               return (
-                <div key={i} style={{ position: 'relative', aspectRatio: '1/1' }}>
-                  <Image src={url} alt={`${dog.name} — photo ${i + 1}`} fill style={{ objectFit: 'cover' }} />
+                <div key={i} style={{ position: 'relative', aspectRatio: '4/3' }}>
+                  <Image
+                    src={url}
+                    alt={`${dog.name} — photo ${i + 1}`}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                  />
                 </div>
               )
             })}

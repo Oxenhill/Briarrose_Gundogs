@@ -34,12 +34,18 @@ export default async function GalleryPage() {
             }}
           >
             {items.map((item) => {
-              const url = item.image ? urlForImage(item.image).width(700).height(700).url() : null
+              const url = item.image ? urlForImage(item.image).width(1100).height(1100).url() : null
               return (
                 <figure key={item._id} style={{ margin: 0 }}>
                   {url ? (
                     <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                      <Image src={url} alt={item.title || ''} fill style={{ objectFit: 'cover' }} />
+                      <Image
+                        src={url}
+                        alt={item.title || ''}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
                     </div>
                   ) : (
                     <div className="frame ph-texture" style={{ aspectRatio: '1/1' }} />
