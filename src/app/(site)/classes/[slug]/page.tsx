@@ -35,6 +35,9 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
   // uncoordinated crop in the browser on top of Sanity's own crop).
   const imageUrl = item.image ? urlForImage(item.image).width(2000).height(1125).url() : null
 
+  // This class's own Dog Smart link, if set, otherwise the site-wide one.
+  const bookingUrl = item.bookingUrl && item.bookingUrl !== '#' ? item.bookingUrl : site.bookingUrl
+
   return (
     <>
       <PageHero eyebrow={item.stageLabel || 'Class'} heading={item.title} body={item.summary} />
@@ -69,8 +72,26 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
               From {item.price}
             </p>
           )}
-          {site.bookingUrl && site.bookingUrl !== '#' ? (
-            <PillLink href={site.bookingUrl} solid external>
+          {item.location && (
+            <p style={{ fontSize: 15, color: 'var(--ink-soft)', marginBottom: 28 }}>
+              {item.location.mapUrl ? (
+                <a href={item.location.mapUrl} target="_blank" rel="noopener noreferrer">
+                  {item.location.name}
+                </a>
+              ) : (
+                item.location.name
+              )}
+              {item.location.address ? ` — ${item.location.address}` : ''}
+              {item.location.notes ? (
+                <>
+                  <br />
+                  {item.location.notes}
+                </>
+              ) : null}
+            </p>
+          )}
+          {bookingUrl && bookingUrl !== '#' ? (
+            <PillLink href={bookingUrl} solid external>
               Book This Class
             </PillLink>
           ) : (
@@ -92,6 +113,15 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
             name: site.businessName,
           },
           areaServed: site.coverageArea,
+          ...(item.location
+            ? {
+                location: {
+                  '@type': 'Place',
+                  name: item.location.name,
+                  ...(item.location.address ? { address: item.location.address } : {}),
+                },
+              }
+            : {}),
         }}
       />
     </>

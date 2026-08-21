@@ -68,6 +68,15 @@ export const fallbackTrainerProfile = {
   credentials: [] as string[],
 }
 
+/** Loose shape for a dereferenced `location` document, as returned by the classItem queries. */
+export type ClassLocation = {
+  name: string
+  address: string | undefined
+  postcode: string | undefined
+  mapUrl: string | undefined
+  notes: string | undefined
+} | null
+
 export const fallbackClasses: {
   _id: string
   title: string
@@ -76,6 +85,8 @@ export const fallbackClasses: {
   description: unknown[] | undefined
   stageLabel: string | undefined
   price: string | undefined
+  bookingUrl: string | undefined
+  location: ClassLocation
   image: SanityImage
   order: number
   active: boolean
@@ -88,6 +99,8 @@ export const fallbackClasses: {
     description: undefined,
     stageLabel: 'From 8 weeks',
     price: undefined,
+    bookingUrl: undefined,
+    location: null,
     image: null,
     order: 1,
     active: true,
@@ -100,6 +113,8 @@ export const fallbackClasses: {
     description: undefined,
     stageLabel: '6+ months',
     price: undefined,
+    bookingUrl: undefined,
+    location: null,
     image: null,
     order: 2,
     active: true,
@@ -112,6 +127,8 @@ export const fallbackClasses: {
     description: undefined,
     stageLabel: 'Intermediate',
     price: undefined,
+    bookingUrl: undefined,
+    location: null,
     image: null,
     order: 3,
     active: true,

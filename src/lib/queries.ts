@@ -21,9 +21,14 @@ export function getTrainerProfile() {
   return sanityFetch(`*[_type == "trainerProfile"][0]`, {}, fallbackTrainerProfile)
 }
 
+// `location` is a reference on classItem, so it's dereferenced with `->`
+// here rather than relying on the default `*` projection (which would
+// otherwise return just `{_type: "reference", _ref: "..."}`).
+const CLASS_ITEM_PROJECTION = `{..., location->{name, address, postcode, mapUrl, notes}}`
+
 export function getClasses() {
   return sanityFetch(
-    `*[_type == "classItem" && active != false] | order(order asc)`,
+    `*[_type == "classItem" && active != false] | order(order asc)${CLASS_ITEM_PROJECTION}`,
     {},
     fallbackClasses
   )
@@ -31,7 +36,7 @@ export function getClasses() {
 
 export function getClassBySlug(slug: string) {
   return sanityFetch(
-    `*[_type == "classItem" && slug.current == $slug][0]`,
+    `*[_type == "classItem" && slug.current == $slug][0]${CLASS_ITEM_PROJECTION}`,
     { slug },
     fallbackClasses.find((c) => c.slug.current === slug) ?? null
   )

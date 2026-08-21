@@ -10,7 +10,11 @@ export function ClassRow({ item, index }: { item: ClassItem; index: number }) {
         <h3>{item.title}</h3>
         <p style={{ color: 'var(--ink-soft)', fontSize: 14.5, marginTop: 4 }}>{item.summary}</p>
       </span>
-      {item.stageLabel && <span className="meta">{item.stageLabel}</span>}
+      {(item.stageLabel || item.location) && (
+        <span className="meta">
+          {[item.stageLabel, item.location?.name].filter(Boolean).join(' · ')}
+        </span>
+      )}
       <span className="go" aria-hidden="true">
         →
       </span>

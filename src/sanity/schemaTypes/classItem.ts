@@ -40,6 +40,21 @@ export default defineType({
         'Shown exactly as typed on this class\'s page, preceded by "From ". E.g. entering "£35" shows "From £35"; entering "POA" shows "From POA" — so include your own currency symbol or wording.',
     }),
     defineField({
+      name: 'bookingUrl',
+      title: 'Booking link (optional — overrides the global link)',
+      type: 'url',
+      description:
+        'This class\'s own Dog Smart share link, if it has one. Powers the "Book This Class" button on this class\'s page. Leave empty to use the site-wide booking link instead (Site Settings → General → Booking link).',
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'reference',
+      to: [{ type: 'location' }],
+      description:
+        'Which venue this class runs at. Shown on this class\'s own page. Add or edit venues under the "Locations" section in the sidebar.',
+    }),
+    defineField({
       name: 'image',
       title: 'Photo',
       type: 'image',
@@ -70,6 +85,13 @@ export default defineType({
     },
   ],
   preview: {
-    select: { title: 'title', subtitle: 'stageLabel', media: 'image' },
+    select: { title: 'title', stageLabel: 'stageLabel', locationName: 'location.name', media: 'image' },
+    prepare({ title, stageLabel, locationName, media }) {
+      return {
+        title,
+        subtitle: [stageLabel, locationName].filter(Boolean).join(' · '),
+        media,
+      }
+    },
   },
 })

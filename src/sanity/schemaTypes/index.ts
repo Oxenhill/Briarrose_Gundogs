@@ -3,6 +3,7 @@ import { type SchemaTypeDefinition } from 'sanity'
 import siteSettings from './siteSettings'
 import trainerProfile from './trainerProfile'
 import classItem from './classItem'
+import location from './location'
 import dog from './dog'
 import testimonial from './testimonial'
 import galleryItem from './galleryItem'
@@ -17,6 +18,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     siteSettings,
     trainerProfile,
     classItem,
+    location,
     dog,
     testimonial,
     galleryItem,
