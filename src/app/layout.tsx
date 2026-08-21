@@ -2,9 +2,6 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, Jost } from 'next/font/google'
 import './globals.css'
 import { getSiteSettings } from '@/lib/queries'
-import { SiteNav } from '@/components/site-nav'
-import { SiteFooter } from '@/components/site-footer'
-import { ScrollRevealInit } from '@/components/scroll-reveal-init'
 import { urlForImage } from '@/sanity/lib/image'
 
 const cormorant = Cormorant_Garamond({
@@ -55,49 +52,26 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({ children }: LayoutProps<'/'>) {
-  const site = await getSiteSettings()
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://briarrosegundogs.co.uk'
-
-  const localBusinessJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': `${siteUrl}/#business`,
-    name: site.businessName,
-    description: site.seoDefaultDescription,
-    url: siteUrl,
-    telephone: site.phone,
-    email: site.email,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: site.addressLocality,
-      addressRegion: site.addressRegion,
-      addressCountry: 'GB',
-    },
-    areaServed: site.coverageArea,
-    ...(site.travelRadiusMiles
-      ? {
-          geoRadius: `${site.travelRadiusMiles} mi`,
-        }
-      : {}),
-    sameAs: (site.socialLinks || []).map((s) => s.url),
-  }
-
+/**
+ * The true root layout — deliberately minimal. It only sets up <html>/<body>,
+ * fonts, and site-wide metadata defaults.
+ *
+ * The public site's header/footer chrome (SiteNav, SiteFooter, the
+ * LocalBusiness structured data, scroll-reveal init) lives in
+ * `(site)/layout.tsx` instead of here, so that `/studio` — which is NOT
+ * inside the `(site)` route group — renders with nothing else around it.
+ * The embedded Sanity Studio expects to own the full browser viewport and
+ * manage its own internal scrolling; nesting it inside the marketing site's
+ * sticky header/footer squeezes it into a fraction of the screen and breaks
+ * its scrolling, which is exactly the bug this split fixes.
+ */
+export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
-        />
-        <ScrollRevealInit />
-        <SiteNav site={site} />
-        <main className="flex-1">{children}</main>
-        <SiteFooter site={site} />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   )
 }
