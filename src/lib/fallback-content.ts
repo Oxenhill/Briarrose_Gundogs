@@ -195,6 +195,7 @@ export const fallbackTestimonials: {
   clientName: string
   location: string | undefined
   dogName: string | undefined
+  rating: number | undefined
   photo: SanityImage
   source: string | undefined
   sourceUrl: string | undefined
@@ -207,6 +208,7 @@ export const fallbackTestimonials: {
     clientName: 'Client name',
     location: 'Location',
     dogName: undefined,
+    rating: 5,
     photo: null,
     source: undefined,
     sourceUrl: undefined,

@@ -4,6 +4,7 @@ import { PillLink } from '@/components/pill'
 import { SplitSection } from '@/components/split-section'
 import { Marquee } from '@/components/marquee'
 import { ClassRow } from '@/components/class-row'
+import { StarRating } from '@/components/star-rating'
 import { JsonLd } from '@/components/json-ld'
 import { buildMetadata } from '@/lib/seo'
 import { urlForImage } from '@/sanity/lib/image'
@@ -98,6 +99,11 @@ export default async function HomePage() {
       {testimonial && (
         <section className="quote-band" data-reveal="">
           <div className="container">
+            {typeof testimonial.rating === 'number' && (
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20, opacity: 0.85 }}>
+                <StarRating value={testimonial.rating} />
+              </div>
+            )}
             <blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
             <cite>
               {testimonial.clientName}

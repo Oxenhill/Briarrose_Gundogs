@@ -12,11 +12,21 @@ export default defineType({
     defineField({ name: 'location', title: 'Location', type: 'string' }),
     defineField({ name: 'dogName', title: 'Dog name (optional)', type: 'string' }),
     defineField({
+      name: 'rating',
+      title: 'Star rating (optional)',
+      type: 'number',
+      options: { list: [1, 2, 3, 4, 5], layout: 'radio' },
+      validation: (Rule) => Rule.min(1).max(5).integer(),
+      description:
+        'Optional. Shown as stars next to the quote, and averaged into the overall rating shown at the top of the Testimonials page (and in search-engine star ratings, via structured data). Leave blank for a testimonial with no rating attached — it\'s simply left out of both.',
+    }),
+    defineField({
       name: 'photo',
       title: 'Photo (optional)',
       type: 'image',
       options: { hotspot: true },
-      description: 'Not currently shown on the site — reserved for future use.',
+      description:
+        'Shown as a small circular photo next to the quote on the Testimonials page. Submitted automatically when someone uploads one via the private submission link — you can also add one yourself for a testimonial you enter by hand.',
     }),
     defineField({
       name: 'source',
