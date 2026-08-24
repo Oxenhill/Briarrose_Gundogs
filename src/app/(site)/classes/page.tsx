@@ -28,9 +28,13 @@ export default async function ClassesPage() {
       />
       <section className="list-section" style={{ paddingTop: 0 }}>
         <div className="container">
-          {classes.map((item, i) => (
-            <ClassRow key={item._id} item={item} index={i} />
-          ))}
+          {classes.length === 0 ? (
+            <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
+              <span className="tag">Classes will appear here once added in the CMS</span>
+            </div>
+          ) : (
+            classes.map((item, i) => <ClassRow key={item._id} item={item} index={i} />)
+          )}
         </div>
       </section>
     </>

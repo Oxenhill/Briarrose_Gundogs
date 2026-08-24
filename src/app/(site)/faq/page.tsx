@@ -24,23 +24,29 @@ export default async function FaqPage() {
         body={site.faqPageBody}
       />
       <section className="container" style={{ paddingBottom: 120, maxWidth: 760 }}>
-        <div>
-          {faqs.map((faq) => (
-            <details key={faq._id} style={{ borderTop: '1px solid var(--line)', padding: '22px 0' }}>
-              <summary
-                style={{
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 19,
-                  fontWeight: 500,
-                }}
-              >
-                {faq.question}
-              </summary>
-              <p style={{ color: 'var(--ink-soft)', marginTop: 14, fontSize: 15 }}>{faq.answer}</p>
-            </details>
-          ))}
-        </div>
+        {faqs.length === 0 ? (
+          <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
+            <span className="tag">Questions will appear here once added in the CMS</span>
+          </div>
+        ) : (
+          <div>
+            {faqs.map((faq) => (
+              <details key={faq._id} style={{ borderTop: '1px solid var(--line)', padding: '22px 0' }}>
+                <summary
+                  style={{
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 19,
+                    fontWeight: 500,
+                  }}
+                >
+                  {faq.question}
+                </summary>
+                <p style={{ color: 'var(--ink-soft)', marginTop: 14, fontSize: 15 }}>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        )}
       </section>
 
       <JsonLd

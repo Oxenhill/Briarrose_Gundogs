@@ -1,10 +1,19 @@
 /**
- * Central fallback/placeholder content.
+ * Central fallback content.
  *
- * Every piece of copy on the site is meant to live in Sanity. Until real
- * content is entered (or if a query fails), pages fall back to the values
- * here — so there is exactly ONE place placeholder text lives, instead of
- * it being scattered through component files.
+ * Every piece of copy on the site is meant to live in Sanity. If a query
+ * fails (or Sanity isn't connected yet), pages fall back to the values here
+ * — so there is exactly ONE place fallback text lives, instead of it being
+ * scattered through component files.
+ *
+ * The site-wide settings fallback below stays populated with sensible
+ * generic defaults (safe to show even if genuinely empty — e.g. "Classes &
+ * Services" as a section label). The per-item collections further down
+ * (classes, dogs, testimonials, FAQs, policies) are deliberately left EMPTY
+ * rather than filled with sample entries: an empty list lets each page show
+ * its proper "nothing here yet" state, whereas a named placeholder like a
+ * "Client name" testimonial reads as real content if it were ever served to
+ * a real visitor. See the comment above `fallbackClasses` below for more.
  *
  * Optional/nullable fields are given explicit union types (rather than
  * inferred from `null`/`undefined` literals) so the same type still fits
@@ -109,6 +118,16 @@ export type ClassLocation = {
   notes: string | undefined
 } | null
 
+// `fallbackClasses`, `fallbackDogs`, `fallbackTestimonials`, `fallbackFaqs`
+// and `fallbackPolicies` are intentionally EMPTY (below), not populated with
+// sample copy like the site once had. A named, in-character "Client name"
+// testimonial or a "[Dog name]" profile reads as real content, not an
+// obvious placeholder — if a query for one of these ever legitimately comes
+// back empty (nothing published yet, or a document removed), the calling
+// page shows its normal "nothing here yet" empty state instead of quietly
+// publishing invented copy under a real business's name. `fallbackSiteSettings`
+// above stays populated, since generic labels like "Classes & Services" are
+// safe defaults rather than content attributed to a person or business.
 export const fallbackClasses: {
   _id: string
   title: string
@@ -122,50 +141,7 @@ export const fallbackClasses: {
   image: SanityImage
   order: number
   active: boolean
-}[] = [
-  {
-    _id: 'placeholder-1',
-    title: 'Puppy Foundations',
-    slug: { current: 'puppy-foundations' },
-    summary: 'Placeholder description of early gundog groundwork — recall, steadiness, and calm handling basics.',
-    description: undefined,
-    stageLabel: 'From 8 weeks',
-    price: undefined,
-    bookingUrl: undefined,
-    location: null,
-    image: null,
-    order: 1,
-    active: true,
-  },
-  {
-    _id: 'placeholder-2',
-    title: 'Gundog Obedience',
-    slug: { current: 'gundog-obedience' },
-    summary: 'Placeholder description covering steadiness, retrieving fundamentals, and field manners.',
-    description: undefined,
-    stageLabel: '6+ months',
-    price: undefined,
-    bookingUrl: undefined,
-    location: null,
-    image: null,
-    order: 2,
-    active: true,
-  },
-  {
-    _id: 'placeholder-3',
-    title: 'Retrieving & Steadiness',
-    slug: { current: 'retrieving-and-steadiness' },
-    summary: 'Placeholder description for dogs building on the basics towards reliable field work.',
-    description: undefined,
-    stageLabel: 'Intermediate',
-    price: undefined,
-    bookingUrl: undefined,
-    location: null,
-    image: null,
-    order: 3,
-    active: true,
-  },
-]
+}[] = []
 
 export const fallbackDogs: {
   _id: string
@@ -176,18 +152,7 @@ export const fallbackDogs: {
   photo: SanityImage
   gallery: SanityImage[] | undefined
   order: number
-}[] = [
-  {
-    _id: 'placeholder-dog-1',
-    name: '[Dog name]',
-    slug: { current: 'dog-one' },
-    breed: '[Breed]',
-    blurb: 'Placeholder blurb — add a short profile for each of your dogs from the CMS.',
-    photo: null,
-    gallery: undefined,
-    order: 1,
-  },
-]
+}[] = []
 
 export const fallbackTestimonials: {
   _id: string
@@ -201,21 +166,7 @@ export const fallbackTestimonials: {
   sourceUrl: string | undefined
   featured: boolean
   order: number
-}[] = [
-  {
-    _id: 'placeholder-testimonial-1',
-    quote: 'Placeholder testimonial — real client quotes will replace this once supplied, pulled straight from the CMS.',
-    clientName: 'Client name',
-    location: 'Location',
-    dogName: undefined,
-    rating: 5,
-    photo: null,
-    source: undefined,
-    sourceUrl: undefined,
-    featured: true,
-    order: 1,
-  },
-]
+}[] = []
 
 export const fallbackGallery: {
   _id: string
@@ -267,14 +218,7 @@ export const fallbackFaqs: {
   question: string
   answer: string
   order: number
-}[] = [
-  {
-    _id: 'placeholder-faq-1',
-    question: 'What age can I start training my puppy?',
-    answer: 'Placeholder answer — replace with real FAQ content from the CMS.',
-    order: 1,
-  },
-]
+}[] = []
 
 export const fallbackPolicies: {
   _id: string
@@ -282,32 +226,7 @@ export const fallbackPolicies: {
   slug: { current: string }
   body: unknown[]
   updatedAt: string | undefined
-}[] = [
-  {
-    _id: 'placeholder-policy-1',
-    title: 'Training Methods & Welfare',
-    slug: { current: 'training-methods-and-welfare' },
-    body: [
-      {
-        _type: 'block',
-        children: [{ _type: 'span', text: 'Placeholder — outline your training methods and welfare policy here.' }],
-      },
-    ],
-    updatedAt: undefined,
-  },
-  {
-    _id: 'placeholder-policy-2',
-    title: 'Terms & Conditions',
-    slug: { current: 'terms-and-conditions' },
-    body: [
-      {
-        _type: 'block',
-        children: [{ _type: 'span', text: 'Placeholder — add your booking and cancellation terms here.' }],
-      },
-    ],
-    updatedAt: undefined,
-  },
-]
+}[] = []
 
 export type SiteSettings = typeof fallbackSiteSettings
 export type TrainerProfile = typeof fallbackTrainerProfile

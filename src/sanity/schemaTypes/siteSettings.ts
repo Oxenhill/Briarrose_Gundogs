@@ -39,12 +39,14 @@ export default defineType({
   // it's obvious which page a field controls whether the section is
   // collapsed or open.
   fieldsets: [
+    { name: 'classesPage', title: 'Classes Page — the full /classes page', options: { collapsible: true, collapsed: true } },
     {
       name: 'homeClasses',
-      title: 'Homepage — "Classes & Services" section',
+      title: 'Homepage teaser (optional override) — the short "Classes & Services" strip partway down the HOMEPAGE',
+      description:
+        'Leave every field in this section blank and the homepage strip automatically reuses whatever you set in "Classes Page" above — so in almost all cases you only need to edit that one, and this section is safe to ignore. Only fill these in if you specifically want the homepage strip to say something DIFFERENT from the full Classes page.',
       options: { collapsible: true, collapsed: true },
     },
-    { name: 'classesPage', title: 'Classes Page (the full /classes page)', options: { collapsible: true, collapsed: true } },
     { name: 'dogsPage', title: 'Dogs Page (/dogs)', options: { collapsible: true, collapsed: true } },
     {
       name: 'testimonialsPage',
@@ -286,38 +288,13 @@ export default defineType({
     // Every one of these controls the small-label + headline (+ optional
     // supporting line) at the very top of one specific page — the part that
     // was previously hardcoded in the site's code and impossible to find or
-    // edit here. Each one is independent of the others, even where two
-    // happen to say similar things (e.g. the homepage's "Classes & Services"
-    // teaser vs. the full /classes page's own header just below it).
-    defineField({
-      name: 'homeClassesEyebrow',
-      title: 'Homepage classes section — small label',
-      type: 'string',
-      group: 'pageHeaders',
-      fieldset: 'homeClasses',
-      description:
-        'Shown on the HOMEPAGE, above the row of classes partway down the page — NOT the same as the Classes Page header below (that\'s a separate, full page of its own at /classes).',
-      initialValue: 'Classes & Services',
-    }),
-    defineField({
-      name: 'homeClassesHeading',
-      title: 'Homepage classes section — headline',
-      type: 'string',
-      group: 'pageHeaders',
-      fieldset: 'homeClasses',
-      initialValue: 'Training built around your dog',
-    }),
-    defineField({
-      name: 'homeClassesBody',
-      title: 'Homepage classes section — supporting line',
-      type: 'text',
-      rows: 2,
-      group: 'pageHeaders',
-      fieldset: 'homeClasses',
-      initialValue:
-        'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.',
-    }),
-
+    // edit here. The homepage's "Classes & Services" teaser and the full
+    // /classes page header used to look like two copies of the same thing —
+    // easy to fill in one and expect the other to change. They're separate
+    // fields, but the homepage teaser now automatically falls back to
+    // whatever the Classes page fields say when left blank (see the code in
+    // src/app/(site)/page.tsx), so editing "Classes page" below is enough
+    // for both in the normal case.
     defineField({
       name: 'classesPageEyebrow',
       title: 'Classes page — small label',
@@ -325,7 +302,7 @@ export default defineType({
       group: 'pageHeaders',
       fieldset: 'classesPage',
       description:
-        'Shown at the very top of the full /classes page (what "View Classes" links to) — separate from the homepage teaser above.',
+        'Shown at the very top of the full /classes page (what "View Classes" links to). Also used on the homepage teaser strip unless you set a different one below.',
       initialValue: 'Classes & Services',
     }),
     defineField({
@@ -345,6 +322,32 @@ export default defineType({
       fieldset: 'classesPage',
       initialValue:
         'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.',
+    }),
+
+    defineField({
+      name: 'homeClassesEyebrow',
+      title: 'Homepage teaser — small label (optional override)',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      description: 'Leave blank to reuse the Classes page small label above.',
+    }),
+    defineField({
+      name: 'homeClassesHeading',
+      title: 'Homepage teaser — headline (optional override)',
+      type: 'string',
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      description: 'Leave blank to reuse the Classes page headline above.',
+    }),
+    defineField({
+      name: 'homeClassesBody',
+      title: 'Homepage teaser — supporting line (optional override)',
+      type: 'text',
+      rows: 2,
+      group: 'pageHeaders',
+      fieldset: 'homeClasses',
+      description: 'Leave blank to reuse the Classes page supporting line above.',
     }),
 
     defineField({

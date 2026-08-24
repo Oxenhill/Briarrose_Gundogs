@@ -44,6 +44,11 @@ export default async function TestimonialsPage() {
             </p>
           </div>
         )}
+        {testimonials.length === 0 ? (
+          <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
+            <span className="tag">Testimonials will appear here once added in the CMS</span>
+          </div>
+        ) : (
         <div style={{ display: 'grid', gap: 56, maxWidth: 780, margin: '0 auto' }}>
           {testimonials.map((t) => {
             const photoUrl = t.photo ? urlForImage(t.photo).width(160).height(160).url() : null
@@ -106,6 +111,7 @@ export default async function TestimonialsPage() {
             )
           })}
         </div>
+        )}
       </section>
     </>
   )

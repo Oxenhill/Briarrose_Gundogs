@@ -173,6 +173,89 @@
     height: 92px;
   }
 
+  /* mobile menu toggle — hidden on desktop; shown at <=900px below,
+     where the two `.nav-row .side` link groups are hidden by CSS and this
+     becomes the only way to reach any page other than the homepage. */
+  .menu-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .menu-toggle-bars {
+    position: relative;
+    width: 22px;
+    height: 14px;
+    display: block;
+  }
+  .menu-toggle-bars span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 0.25s ease, top 0.25s ease, opacity 0.25s ease;
+  }
+  .menu-toggle-bars span:first-child {
+    top: 0;
+  }
+  .menu-toggle-bars span:last-child {
+    top: 12px;
+  }
+  .menu-toggle-bars.open span:first-child {
+    top: 6px;
+    transform: rotate(45deg);
+  }
+  .menu-toggle-bars.open span:last-child {
+    top: 6px;
+    transform: rotate(-45deg);
+  }
+
+  /* mobile menu panel — a full-screen overlay of the same links shown in
+     the desktop header, plus the Book button. Present in the DOM at all
+     widths but only ever opened via `.menu-toggle`, which is itself hidden
+     above 900px (see the media query below), so it never appears on desktop. */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    background: var(--paper);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 240;
+  }
+  .mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+  }
+  .mobile-menu nav a {
+    text-decoration: none;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-style: italic;
+  }
+
   /* hero — typographic, restrained */
   .hero {
     padding: 96px 0 120px;
@@ -527,8 +610,19 @@
     .split .frame {
       min-height: 320px;
     }
+    .nav-row {
+      position: relative;
+      justify-content: center;
+    }
     .nav-row .side {
       display: none;
+    }
+    .menu-toggle {
+      display: flex;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
     .wordmark .crest {
       height: 104px;
@@ -547,6 +641,15 @@
     }
     .about-grid {
       grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* Defensive: guarantees the overlay panel can never be stuck visible
+     above the breakpoint (e.g. a device rotated, or the window resized
+     wider, while the menu happened to be open). */
+  @media (min-width: 901px) {
+    .mobile-menu {
+      display: none !important;
     }
   }
 }

@@ -81,17 +81,28 @@ export default async function HomePage() {
       <section className="list-section">
         <div className="container">
           <div className="list-head" data-reveal="">
-            <span className="eyebrow">{site.homeClassesEyebrow || 'Classes & Services'}</span>
-            <h2>{site.homeClassesHeading || 'Training built around your dog'}</h2>
+            {/* Falls back to the /classes page header, then to a hardcoded
+                default, if the homepage-specific fields below are left
+                blank — so this section never shows visibly "placeholder"
+                copy once the Classes page itself has real content. */}
+            <span className="eyebrow">
+              {site.homeClassesEyebrow || site.classesPageEyebrow || 'Classes & Services'}
+            </span>
+            <h2>{site.homeClassesHeading || site.classesPageHeading || 'Training built around your dog'}</h2>
             <p>
               {site.homeClassesBody ||
+                site.classesPageBody ||
                 'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.'}
             </p>
           </div>
           <div>
-            {classes.map((item, i) => (
-              <ClassRow key={item._id} item={item} index={i} />
-            ))}
+            {classes.length === 0 ? (
+              <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
+                <span className="tag">Classes will appear here once added in the CMS</span>
+              </div>
+            ) : (
+              classes.map((item, i) => <ClassRow key={item._id} item={item} index={i} />)
+            )}
           </div>
         </div>
       </section>

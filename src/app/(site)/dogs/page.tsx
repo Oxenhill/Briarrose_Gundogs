@@ -22,6 +22,11 @@ export default async function DogsPage() {
         body={site.dogsPageBody}
       />
       <section className="container" style={{ paddingBottom: 120 }}>
+        {dogs.length === 0 ? (
+          <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
+            <span className="tag">Our dogs will appear here once added in the CMS</span>
+          </div>
+        ) : (
         <div
           style={{
             display: 'grid',
@@ -62,6 +67,7 @@ export default async function DogsPage() {
             )
           })}
         </div>
+        )}
       </section>
     </>
   )
