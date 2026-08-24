@@ -73,7 +73,7 @@ export default async function HomePage() {
         }
         {...(philosophyImageUrl
           ? { image: { src: philosophyImageUrl, alt: site.businessName } }
-          : { markPanel: { src: '/brand/briarrose-logo.jpeg', alt: `${site.businessName} crest` } })}
+          : { markPanel: { src: '/brand/briarrose-crest.png', alt: `${site.businessName} crest` } })}
       />
 
       <Marquee items={classes.map((c) => c.title)} />

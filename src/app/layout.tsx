@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://briarrosegundogs.co.uk'
   const ogSource = site.ogImage || site.logo
-  const ogImage = ogSource ? urlForImage(ogSource).width(1200).height(630).url() : '/brand/briarrose-logo.jpeg'
+  const ogImage = ogSource ? urlForImage(ogSource).width(1200).height(630).url() : `${siteUrl}/brand/briarrose-og.png`
 
   return {
     metadataBase: new URL(siteUrl),

@@ -50,8 +50,8 @@ export function SiteNav({ site }: { site: SiteSettings }) {
   const rightLinks = NAV_LINKS.slice(half)
 
   // Uses the "Logo" image from Site Settings if one has been uploaded in the
-  // CMS; otherwise falls back to the default logo file shipped with the site.
-  const logoUrl = site.logo ? urlForImage(site.logo).width(480).height(600).url() : '/brand/briarrose-logo.jpeg'
+  // CMS; otherwise falls back to the default crest shipped with the site.
+  const logoUrl = site.logo ? urlForImage(site.logo).width(480).height(600).url() : '/brand/briarrose-crest.png'
   const hasBooking = Boolean(site.bookingUrl && site.bookingUrl !== '#')
 
   return (
@@ -70,8 +70,8 @@ export function SiteNav({ site }: { site: SiteSettings }) {
           <Image
             src={logoUrl}
             alt={`${site.businessName} — Gundog Training in Sevenoaks, Kent`}
-            width={240}
-            height={300}
+            width={520}
+            height={681}
             className="crest"
             priority
           />

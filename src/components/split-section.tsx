@@ -43,7 +43,7 @@ export function SplitSection({
 
       {markPanel ? (
         <div className="frame mark-panel">
-          <Image src={markPanel.src} alt={markPanel.alt} width={340} height={340} />
+          <Image src={markPanel.src} alt={markPanel.alt} width={340} height={445} />
         </div>
       ) : image ? (
         <div className="frame" style={{ position: 'relative' }}>
