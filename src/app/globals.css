@@ -140,10 +140,23 @@
     padding: 10px 0;
     border-color: var(--line);
   }
+  /* Grid rather than flex space-between: with a flex row, the centre item
+     (.wordmark) only lands on the true visual centre when both side groups
+     are the same width. The right side carries an extra "Book" pill that
+     the left side doesn't, so space-between was quietly dragging the crest
+     left of centre. A `1fr auto 1fr` grid keeps the two side columns equal
+     width regardless of how much content either one holds, so the centre
+     column — and the crest inside it — always sits on the true centre. */
   .nav-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
+  }
+  .nav-row .side:first-of-type {
+    justify-self: start;
+  }
+  .nav-row .side:last-of-type {
+    justify-self: end;
   }
   .nav-row .side {
     display: flex;
@@ -617,7 +630,12 @@
     }
     .nav-row {
       position: relative;
-      justify-content: center;
+      /* Both `.side` link groups are hidden below, so the wordmark is the
+         only grid item left — collapse to a single centred column rather
+         than keeping the 3-column desktop track (which would leave it
+         sitting in the first column, off to the left). */
+      grid-template-columns: 1fr;
+      justify-items: center;
     }
     .nav-row .side {
       display: none;
