@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero'
 import { JsonLd } from '@/components/json-ld'
 import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
+import { toEmbedUrl } from '@/lib/video-embed'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -41,7 +42,7 @@ export default async function VideosPage() {
               <div key={video._id}>
                 <div style={{ position: 'relative', aspectRatio: '16/9', marginBottom: 16 }}>
                   <iframe
-                    src={video.embedUrl}
+                    src={toEmbedUrl(video.embedUrl)}
                     title={video.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -60,7 +61,7 @@ export default async function VideosPage() {
                     description: video.description,
                     thumbnailUrl: video.thumbnail ? urlForImage(video.thumbnail).width(800).url() : undefined,
                     uploadDate: video.publishedAt,
-                    embedUrl: video.embedUrl,
+                    embedUrl: toEmbedUrl(video.embedUrl),
                   }}
                 />
               </div>
