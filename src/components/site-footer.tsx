@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { SiteSettings } from '@/lib/fallback-content'
 import { SocialLinks } from '@/components/social-links'
+import { ObfuscatedPhone } from '@/components/obfuscated-phone'
+import { encodePhone } from '@/lib/phone-obfuscate'
 import { NewsletterForm } from '@/components/newsletter-form'
 import { getPolicies } from '@/lib/queries'
 
@@ -65,7 +67,7 @@ export async function SiteFooter({ site }: { site: SiteSettings }) {
           </div>
           <div>
             <h4>Get in Touch</h4>
-            {site.phone && <a href={`tel:${site.phone.replace(/\s+/g, '')}`}>{site.phone}</a>}
+            {site.phone && <ObfuscatedPhone encoded={encodePhone(site.phone)} />}
             {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
             <span style={{ display: 'block', fontSize: 14.5, marginBottom: 10 }}>
               {site.coverageArea}

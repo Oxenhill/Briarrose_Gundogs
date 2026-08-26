@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { getSiteSettings } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
+import { ObfuscatedPhone } from '@/components/obfuscated-phone'
+import { encodePhone } from '@/lib/phone-obfuscate'
 import { PillLink } from '@/components/pill'
 import { SocialLinks } from '@/components/social-links'
 import { ContactForm } from '@/components/contact-form'
@@ -45,7 +47,7 @@ export default async function ContactPage() {
               Details
             </h4>
             <div style={{ display: 'grid', gap: 10, marginBottom: 32, fontSize: 15.5 }}>
-              {site.phone && <a href={`tel:${site.phone.replace(/\s+/g, '')}`}>{site.phone}</a>}
+              {site.phone && <ObfuscatedPhone encoded={encodePhone(site.phone)} />}
               {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
               <span style={{ color: 'var(--ink-soft)' }}>
                 {site.addressLocality}, {site.addressRegion}
