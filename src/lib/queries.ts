@@ -1,6 +1,7 @@
 import { sanityFetch } from '@/sanity/lib/client'
 import {
   fallbackClasses,
+  fallbackCourses,
   fallbackDogs,
   fallbackEvents,
   fallbackFaqs,
@@ -111,5 +112,46 @@ export function getPolicyBySlug(slug: string) {
     `*[_type == "policy" && slug.current == $slug][0]`,
     { slug },
     fallbackPolicies.find((p) => p.slug.current === slug) ?? null
+  )
+}
+
+// Only one course lives on this site today (the gundog course), but this
+// mirrors the same shape as every other collection here so a second course
+// is just another Sanity document away, not a schema change.
+export function getCourses() {
+  return sanityFetch(
+    `*[_type == "course" && published == true] | order(order asc)`,
+    {},
+    fallbackCourses
+  )
+}
+
+// `pdfBlock.file` is a Sanity `file` field — unlike images (resolvable
+// client-side from just the raw asset ref via urlForImage), a file's
+// download URL only exists once the query itself dereferences the asset,
+// so this explicit per-block projection is required (plain `*` would
+// leave `file.asset` as just `{_ref}`, with no usable url).
+const COURSE_DETAIL_PROJECTION = `{
+  ...,
+  modules[]{
+    ...,
+    lessons[]{
+      ...,
+      content[]{
+        ...,
+        _type == "pdfBlock" => {
+          ...,
+          "file": { "asset": file.asset->{url, originalFilename} }
+        }
+      }
+    }
+  }
+}`
+
+export function getCourseBySlug(slug: string) {
+  return sanityFetch(
+    `*[_type == "course" && slug.current == $slug && published == true][0]${COURSE_DETAIL_PROJECTION}`,
+    { slug },
+    fallbackCourses.find((c) => c.slug.current === slug) ?? null
   )
 }

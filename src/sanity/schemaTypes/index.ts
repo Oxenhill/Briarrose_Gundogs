@@ -12,6 +12,7 @@ import post from './post'
 import event from './event'
 import policy from './policy'
 import faqItem from './faqItem'
+import course from './course'
 import newsletterSignup from './newsletterSignup'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -29,5 +30,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     event,
     policy,
     faqItem,
+    course,
   ],
 }

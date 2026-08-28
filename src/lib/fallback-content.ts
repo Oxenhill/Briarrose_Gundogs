@@ -78,6 +78,9 @@ export const fallbackSiteSettings = {
   videosPageEyebrow: 'Video Hub',
   videosPageHeading: 'Watch the training in action',
   videosPageBody: '',
+  onlineLearningPageEyebrow: 'Online Learning',
+  onlineLearningPageHeading: 'Gundog course material for clients',
+  onlineLearningPageBody: '',
   journalPageEyebrow: 'Journal',
   journalPageHeading: 'Notes from the field',
   journalPageBody: '',
@@ -220,6 +223,87 @@ export const fallbackFaqs: {
   order: number
 }[] = []
 
+
+/**
+ * Course content types (the single gundog course this site hosts). A
+ * lesson's content is a mixed, ordered list of blocks (video / text / PDF
+ * / external-video-link / slide image) rather than one video-plus-text
+ * field, since the real course material mixes these freely within one
+ * lesson.
+ *
+ * Access control (which logged-in clients can see this) is handled
+ * separately in courseAccess.ts, driven by `entitlementKey` below — this
+ * type only describes the course CONTENT.
+ */
+export type CourseVideoBlock = {
+  _key: string
+  _type: 'videoBlock'
+  title: string | undefined
+  provider: 'cloudflare_stream' | 'external_url' | undefined
+  cloudflareVideoId: string | undefined
+  externalUrl: string | undefined
+  posterImage: SanityImage
+}
+export type CourseTextBlock = {
+  _key: string
+  _type: 'textBlock'
+  content: unknown[] | undefined
+}
+export type CoursePdfBlock = {
+  _key: string
+  _type: 'pdfBlock'
+  title: string
+  // Dereferenced by COURSE_DETAIL_PROJECTION in queries.ts (a Sanity
+  // `file` field's url isn't resolvable client-side the way an image's is).
+  file: { asset?: { url?: string; originalFilename?: string } } | undefined
+}
+export type CourseYoutubeBlock = {
+  _key: string
+  _type: 'youtubeEmbedBlock'
+  title: string | undefined
+  url: string
+}
+export type CourseImageSlideBlock = {
+  _key: string
+  _type: 'imageSlideBlock'
+  image: SanityImage
+  caption: string | undefined
+}
+export type CourseContentBlock =
+  | CourseVideoBlock
+  | CourseTextBlock
+  | CoursePdfBlock
+  | CourseYoutubeBlock
+  | CourseImageSlideBlock
+
+export type CourseLesson = {
+  _key: string
+  title: string
+  durationMinutes: number | undefined
+  isFreePreview: boolean | undefined
+  content: CourseContentBlock[] | undefined
+}
+export type CourseModule = {
+  _key: string
+  title: string
+  summary: string | undefined
+  lessons: CourseLesson[] | undefined
+}
+
+export const fallbackCourses: {
+  _id: string
+  title: string
+  slug: { current: string }
+  entitlementKey: string
+  summary: string
+  description: unknown[] | undefined
+  coverImage: SanityImage
+  price: string | undefined
+  modules: CourseModule[] | undefined
+  order: number
+  published: boolean
+}[] = []
+
 export const fallbackPolicies: {
   _id: string
   title: string
@@ -239,3 +323,4 @@ export type Post = (typeof fallbackPosts)[number]
 export type EventItem = (typeof fallbackEvents)[number]
 export type FaqItem = (typeof fallbackFaqs)[number]
 export type Policy = (typeof fallbackPolicies)[number]
+export type CourseItem = (typeof fallbackCourses)[number]
