@@ -1,4 +1,5 @@
 import { defineField, defineType, defineArrayMember } from 'sanity'
+import { CloudflareStreamUploadInput } from '../components/CloudflareStreamUploadInput'
 
 /**
  * Powers the "Online Learning" area — the client-only gundog course that
@@ -41,10 +42,11 @@ const videoBlock = defineArrayMember({
     }),
     defineField({
       name: 'cloudflareVideoId',
-      title: 'Cloudflare Stream video ID',
+      title: 'Video',
       type: 'string',
-      description: 'The video UID from the Cloudflare Stream dashboard, once uploaded there.',
+      description: 'Upload the video here and this fills in automatically — only edit by hand if you already have a Cloudflare Stream video UID to reuse.',
       hidden: ({ parent }) => parent?.provider !== 'cloudflare_stream',
+      components: { input: CloudflareStreamUploadInput },
     }),
     defineField({
       name: 'externalUrl',
