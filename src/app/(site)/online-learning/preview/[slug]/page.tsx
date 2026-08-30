@@ -32,6 +32,14 @@ export async function generateStaticParams() {
   return []
 }
 
+// Every fetch on this page passes `revalidate: 0` (see getCourseBySlugPreview)
+// because it must always show the change just made in the Course Builder,
+// never a stale cached copy. Next's build-time analysis doesn't see that
+// and prerenders this route as static, so the first live request throws
+// "Page changed from static to dynamic at runtime" instead of rendering.
+// Forcing it dynamic here means it's never prerendered in the first place.
+export const dynamic = 'force-dynamic'
+
 export default async function CoursePreviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const course = await getCourseBySlugPreview(slug)
