@@ -218,7 +218,7 @@ export default defineType({
         list: [{ title: 'Gundog Training', value: 'gundog_course' }],
       },
       initialValue: 'gundog_course',
-      description: 'Which package/session-type entitlement flag in the booking system unlocks this course for a logged-in client. This site only ever offers the gundog course, so there is one option — must match exactly what the booking system uses.',
+      description: 'Which entitlement flag in the booking system unlocks this course. This is not tied to any single package — in the booking system, turn on the toggle described as "includes access to the Gundog Training course" on every package and session type that should unlock it (Settings → Packages/Session Types), and all of them will grant access. This site only ever offers the gundog course, so there is one option here — its value must match exactly what the booking system uses (it does not need renaming).',
       validation: (Rule) => Rule.required(),
     }),
     defineField({ name: 'summary', title: 'Short summary (used in listings)', type: 'text', rows: 3 }),
