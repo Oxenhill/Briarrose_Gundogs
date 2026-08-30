@@ -676,63 +676,40 @@
     }
   }
 
-  /* Course navigation — floating menu on the online-learning course page.
-     Fixed rather than a sidebar column so it works the same whether a
-     client is scrolling a long course page on a laptop or, more likely,
-     checking a lesson off on their phone mid-training-session. */
-  .course-nav-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 260;
-    background: rgba(38, 48, 31, 0.35);
-    border: none;
-    cursor: default;
-    padding: 0;
+  /* Course layout — content column + a real, always-visible navigation
+     sidebar (not a button you have to find and click). On desktop the
+     sidebar sticks alongside the content, the same pattern as the service
+     sidebar elsewhere on the site; below the breakpoint it drops into
+     normal flow under the content instead of hiding. */
+  .course-layout {
+    display: grid;
+    gap: 40px;
+    align-items: start;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  @media (min-width: 861px) {
+    .course-layout {
+      grid-template-columns: minmax(0, 700px) minmax(240px, 300px);
+    }
   }
   .course-nav {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 270;
-  }
-  .course-nav-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--deep);
-    background: var(--deep);
-    color: var(--on-deep);
-    padding: 13px 22px;
-    border-radius: 3px;
-    font-family: var(--font-ui);
-    font-size: 12.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(38, 48, 31, 0.28);
-  }
-  .course-nav-toggle:hover {
-    background: var(--ink);
-    border-color: var(--ink);
-  }
-  .course-nav-toggle-count {
-    font-family: var(--font-ui);
-    letter-spacing: normal;
-    text-transform: none;
-    opacity: 0.85;
-  }
-  .course-nav-panel {
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + 12px);
-    width: min(340px, calc(100vw - 40px));
-    max-height: min(70vh, 560px);
-    overflow-y: auto;
-    background: var(--paper);
+    position: sticky;
+    top: 32px;
+    background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 6px;
-    box-shadow: 0 20px 48px rgba(38, 48, 31, 0.3);
-    padding: 20px;
+    padding: 24px;
+  }
+  @media (max-width: 860px) {
+    .course-nav {
+      position: static;
+    }
+  }
+  .course-nav-heading {
+    font-family: var(--font-display);
+    font-size: 18px;
+    margin: 0 0 14px;
   }
   .course-nav-progress-bar {
     height: 6px;
@@ -813,13 +790,31 @@
     text-decoration: none;
   }
 
-  @media (max-width: 520px) {
-    .course-nav {
-      right: 12px;
-      bottom: 12px;
-    }
-    .course-nav-panel {
-      width: calc(100vw - 24px);
-    }
+  /* Lesson separation — each lesson inside a module reads as its own
+     section (numbered, ruled off) rather than one continuous scroll of
+     paragraphs. */
+  .lesson-block {
+    padding-top: 24px;
+    margin-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .lesson-block:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .lesson-heading {
+    font-family: var(--font-display);
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+  .lesson-heading .lesson-number {
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-family: var(--font-ui);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
   }
 }

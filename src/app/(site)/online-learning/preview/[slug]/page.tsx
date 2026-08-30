@@ -53,7 +53,6 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
       </div>
 
       <PageHero eyebrow="Online Learning" heading={course.title} body={course.summary} />
-      <CourseNav courseSlug={`preview-${slug}`} modules={navModules} />
 
       <section className="container" style={{ paddingBottom: 100 }}>
         {imageUrl ? (
@@ -62,46 +61,51 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
           </div>
         ) : null}
 
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          {course.description ? <Prose value={course.description} /> : null}
+        <div className="course-layout">
+          <div className="course-main">
+            {course.description ? <Prose value={course.description} /> : null}
 
-          {course.modules && course.modules.length > 0 ? (
-            <div style={{ marginTop: 32 }}>
-              <h2 style={{ marginBottom: 24 }}>Course content</h2>
-              {course.modules.map((mod) => (
-                <details key={mod._key} id={`module-${mod._key}`} open style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
-                  <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
-                    {mod.title}
-                    {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
-                  </summary>
-                  <div style={{ marginTop: 20 }}>
-                    {mod.summary ? <p style={{ color: 'var(--ink-soft)', marginBottom: 20 }}>{mod.summary}</p> : null}
-                    {(mod.lessons || []).map((lessonItem) => (
-                      <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} style={{ marginBottom: 28, scrollMarginTop: 20 }}>
-                        <p style={{ fontWeight: 600, marginBottom: 12 }}>
-                          {lessonItem.title}
-                          {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
-                          {lessonItem.isFreePreview ? ' (free preview)' : ''}
-                        </p>
-                        <LessonContent blocks={lessonItem.content} />
-                        <LessonProgressControls courseSlug={`preview-${slug}`} lessonKey={lessonItem._key} />
-                      </div>
-                    ))}
-                  </div>
-                </details>
-              ))}
+            {course.modules && course.modules.length > 0 ? (
+              <div style={{ marginTop: 32 }}>
+                <h2 style={{ marginBottom: 24 }}>Course content</h2>
+                {course.modules.map((mod) => (
+                  <details key={mod._key} id={`module-${mod._key}`} open style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
+                    <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
+                      {mod.title}
+                      {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
+                    </summary>
+                    <div style={{ marginTop: 20 }}>
+                      {mod.summary ? <p style={{ color: 'var(--ink-soft)', marginBottom: 20 }}>{mod.summary}</p> : null}
+                      {(mod.lessons || []).map((lessonItem, lessonIndex) => (
+                        <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} className="lesson-block" style={{ scrollMarginTop: 20 }}>
+                          <p className="lesson-heading">
+                            <span className="lesson-number">Lesson {lessonIndex + 1}</span>
+                            {lessonItem.title}
+                            {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
+                            {lessonItem.isFreePreview ? ' (free preview)' : ''}
+                          </p>
+                          <LessonContent blocks={lessonItem.content} />
+                          <LessonProgressControls courseSlug={`preview-${slug}`} lessonKey={lessonItem._key} />
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            ) : (
+              <p style={{ color: 'var(--ink-soft)', marginTop: 32 }}>No modules added yet.</p>
+            )}
+
+            <div style={{ marginTop: 40, textAlign: 'center' }}>
+              <p style={{ color: 'var(--ink-soft)' }}>
+                (In real life, a client only sees this once entitled — see{' '}
+                <a href={`/online-learning/${course.slug.current}`}>the real page</a> for what a logged-out or
+                not-yet-entitled visitor sees instead.)
+              </p>
             </div>
-          ) : (
-            <p style={{ color: 'var(--ink-soft)', marginTop: 32 }}>No modules added yet.</p>
-          )}
-
-          <div style={{ marginTop: 40, textAlign: 'center' }}>
-            <p style={{ color: 'var(--ink-soft)' }}>
-              (In real life, a client only sees this once entitled — see{' '}
-              <a href={`/online-learning/${course.slug.current}`}>the real page</a> for what a logged-out or
-              not-yet-entitled visitor sees instead.)
-            </p>
           </div>
+
+          <CourseNav courseSlug={`preview-${slug}`} modules={navModules} />
         </div>
       </section>
     </>

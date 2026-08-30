@@ -60,7 +60,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
   return (
     <>
       <PageHero eyebrow="Online Learning" heading={course.title} body={course.summary} />
-      <CourseNav courseSlug={slug} modules={navModules} />
 
       <section className="container" style={{ paddingBottom: 100 }}>
         {imageUrl ? (
@@ -76,68 +75,73 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
           </div>
         ) : null}
 
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          {course.description ? <Prose value={course.description} /> : null}
+        <div className="course-layout">
+          <div className="course-main">
+            {course.description ? <Prose value={course.description} /> : null}
 
-          {course.modules && course.modules.length > 0 ? (
-            <div style={{ marginTop: 32 }}>
-              <h2 style={{ marginBottom: 24 }}>Course content</h2>
-              {course.modules.map((mod) => (
-                <details key={mod._key} id={`module-${mod._key}`} open={isEntitled} style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
-                  <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
-                    {mod.title}
-                    {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
-                  </summary>
-                  <div style={{ marginTop: 20 }}>
-                    {mod.summary ? <p style={{ color: 'var(--ink-soft)', marginBottom: 20 }}>{mod.summary}</p> : null}
-                    {(mod.lessons || []).map((lessonItem) => {
-                      const unlocked = !!lessonItem.isFreePreview || isEntitled
-                      return (
-                        <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} style={{ marginBottom: 28, scrollMarginTop: 20 }}>
-                          <p style={{ fontWeight: 600, marginBottom: unlocked ? 12 : 0 }}>
-                            {lessonItem.title}
-                            {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
-                            {lessonItem.isFreePreview ? ' (free preview)' : ''}
-                          </p>
-                          {unlocked ? (
-                            <>
-                              <LessonContent blocks={lessonItem.content} />
-                              <LessonProgressControls courseSlug={slug} lessonKey={lessonItem._key} />
-                            </>
-                          ) : (
-                            <p style={{ fontSize: 13, color: 'var(--ink-soft)' }}>
-                              {clientId
-                                ? "Included with a gundog training package — get in touch if that doesn't look right."
-                                : 'Log in from your account home page to watch this lesson.'}
+            {course.modules && course.modules.length > 0 ? (
+              <div style={{ marginTop: 32 }}>
+                <h2 style={{ marginBottom: 24 }}>Course content</h2>
+                {course.modules.map((mod) => (
+                  <details key={mod._key} id={`module-${mod._key}`} open={isEntitled} style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
+                    <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
+                      {mod.title}
+                      {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
+                    </summary>
+                    <div style={{ marginTop: 20 }}>
+                      {mod.summary ? <p style={{ color: 'var(--ink-soft)', marginBottom: 20 }}>{mod.summary}</p> : null}
+                      {(mod.lessons || []).map((lessonItem, lessonIndex) => {
+                        const unlocked = !!lessonItem.isFreePreview || isEntitled
+                        return (
+                          <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} className="lesson-block" style={{ scrollMarginTop: 20 }}>
+                            <p className="lesson-heading">
+                              <span className="lesson-number">Lesson {lessonIndex + 1}</span>
+                              {lessonItem.title}
+                              {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
+                              {lessonItem.isFreePreview ? ' (free preview)' : ''}
                             </p>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                </details>
-              ))}
-            </div>
-          ) : null}
+                            {unlocked ? (
+                              <>
+                                <LessonContent blocks={lessonItem.content} />
+                                <LessonProgressControls courseSlug={slug} lessonKey={lessonItem._key} />
+                              </>
+                            ) : (
+                              <p style={{ fontSize: 13, color: 'var(--ink-soft)' }}>
+                                {clientId
+                                  ? "Included with a gundog training package — get in touch if that doesn't look right."
+                                  : 'Log in from your account home page to watch this lesson.'}
+                              </p>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            ) : null}
 
-          <div style={{ marginTop: 40, textAlign: 'center' }}>
-            {isEntitled ? (
-              <p style={{ color: 'var(--ink-soft)' }}>You have full access to this course.</p>
-            ) : clientId ? (
-              <PillLink href="/contact" solid>
-                Ask About This Course
-              </PillLink>
-            ) : (
-              <>
-                <PillLink href={BASE44_PORTAL_URL} solid external>
-                  Log In To Watch
+            <div style={{ marginTop: 40, textAlign: 'center' }}>
+              {isEntitled ? (
+                <p style={{ color: 'var(--ink-soft)' }}>You have full access to this course.</p>
+              ) : clientId ? (
+                <PillLink href="/contact" solid>
+                  Ask About This Course
                 </PillLink>
-                <div style={{ marginTop: 12 }}>
-                  <PillLink href="/contact">Ask About This Course</PillLink>
-                </div>
-              </>
-            )}
+              ) : (
+                <>
+                  <PillLink href={BASE44_PORTAL_URL} solid external>
+                    Log In To Watch
+                  </PillLink>
+                  <div style={{ marginTop: 12 }}>
+                    <PillLink href="/contact">Ask About This Course</PillLink>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
+
+          <CourseNav courseSlug={slug} modules={navModules} />
         </div>
       </section>
     </>
