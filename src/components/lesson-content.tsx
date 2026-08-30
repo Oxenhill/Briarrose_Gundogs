@@ -54,11 +54,23 @@ export function LessonContent({ blocks }: { blocks?: CourseContentBlock[] }) {
 
         if (block._type === 'pdfBlock') {
           const fileUrl = block.file?.asset?.url
-          return fileUrl ? (
-            <PillLink key={key} href={fileUrl} external style={{ alignSelf: 'flex-start' }}>
-              Download: {block.title}
-            </PillLink>
-          ) : null
+          if (!fileUrl) return null
+          return (
+            <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ position: 'relative', paddingTop: '129%', border: '1px solid var(--line)' }}>
+                <iframe
+                  src={`${fileUrl}${block.preventDownload ? '#toolbar=0' : ''}`}
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
+                  title={block.title || 'PDF'}
+                />
+              </div>
+              {block.preventDownload ? null : (
+                <PillLink href={fileUrl} external style={{ alignSelf: 'flex-start' }}>
+                  Download: {block.title}
+                </PillLink>
+              )}
+            </div>
+          )
         }
 
         if (block._type === 'youtubeEmbedBlock') {

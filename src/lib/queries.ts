@@ -155,3 +155,19 @@ export function getCourseBySlug(slug: string) {
     fallbackCourses.find((c) => c.slug.current === slug) ?? null
   )
 }
+
+// Preview-only variants for /online-learning/preview (see that route) — the
+// only difference is dropping `published == true`, so Oliver can see a
+// course while he's still building it in Studio, before it's ready for
+// real clients. Never used outside that Basic-Auth-gated route.
+export function getCoursesPreview() {
+  return sanityFetch(`*[_type == "course"] | order(order asc)`, {}, fallbackCourses)
+}
+
+export function getCourseBySlugPreview(slug: string) {
+  return sanityFetch(
+    `*[_type == "course" && slug.current == $slug][0]${COURSE_DETAIL_PROJECTION}`,
+    { slug },
+    fallbackCourses.find((c) => c.slug.current === slug) ?? null
+  )
+}

@@ -256,6 +256,7 @@ export type CoursePdfBlock = {
   // Dereferenced by COURSE_DETAIL_PROJECTION in queries.ts (a Sanity
   // `file` field's url isn't resolvable client-side the way an image's is).
   file: { asset?: { url?: string; originalFilename?: string } } | undefined
+  preventDownload?: boolean
 }
 export type CourseYoutubeBlock = {
   _key: string
