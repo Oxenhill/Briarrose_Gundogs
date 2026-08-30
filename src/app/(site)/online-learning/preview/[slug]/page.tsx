@@ -4,6 +4,8 @@ import { getCourseBySlugPreview, getCoursesPreview } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { Prose } from '@/components/prose'
 import { LessonContent } from '@/components/lesson-content'
+import { CourseNav } from '@/components/course-nav'
+import { LessonProgressControls } from '@/components/lesson-progress-controls'
 import { urlForImage } from '@/sanity/lib/image'
 
 /**
@@ -37,6 +39,12 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
 
   const imageUrl = course.coverImage ? urlForImage(course.coverImage).width(2000).height(1125).url() : null
 
+  const navModules = (course.modules || []).map((mod) => ({
+    key: mod._key,
+    title: mod.title,
+    lessons: (mod.lessons || []).map((lessonItem) => ({ key: lessonItem._key, title: lessonItem.title, locked: false })),
+  }))
+
   return (
     <>
       <div style={{ background: '#111', color: '#fff', padding: '10px 24px', textAlign: 'center', fontSize: 14 }}>
@@ -45,6 +53,7 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
       </div>
 
       <PageHero eyebrow="Online Learning" heading={course.title} body={course.summary} />
+      <CourseNav courseSlug={`preview-${slug}`} modules={navModules} />
 
       <section className="container" style={{ paddingBottom: 100 }}>
         {imageUrl ? (
@@ -60,7 +69,7 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
             <div style={{ marginTop: 32 }}>
               <h2 style={{ marginBottom: 24 }}>Course content</h2>
               {course.modules.map((mod) => (
-                <details key={mod._key} open style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20 }}>
+                <details key={mod._key} id={`module-${mod._key}`} open style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
                   <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
                     {mod.title}
                     {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
@@ -68,13 +77,14 @@ export default async function CoursePreviewPage({ params }: { params: Promise<{ 
                   <div style={{ marginTop: 20 }}>
                     {mod.summary ? <p style={{ color: 'var(--ink-soft)', marginBottom: 20 }}>{mod.summary}</p> : null}
                     {(mod.lessons || []).map((lessonItem) => (
-                      <div key={lessonItem._key} style={{ marginBottom: 28 }}>
+                      <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} style={{ marginBottom: 28, scrollMarginTop: 20 }}>
                         <p style={{ fontWeight: 600, marginBottom: 12 }}>
                           {lessonItem.title}
                           {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
                           {lessonItem.isFreePreview ? ' (free preview)' : ''}
                         </p>
                         <LessonContent blocks={lessonItem.content} />
+                        <LessonProgressControls courseSlug={`preview-${slug}`} lessonKey={lessonItem._key} />
                       </div>
                     ))}
                   </div>

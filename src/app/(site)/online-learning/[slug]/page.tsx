@@ -7,6 +7,8 @@ import { PageHero } from '@/components/page-hero'
 import { PillLink } from '@/components/pill'
 import { Prose } from '@/components/prose'
 import { LessonContent } from '@/components/lesson-content'
+import { CourseNav } from '@/components/course-nav'
+import { LessonProgressControls } from '@/components/lesson-progress-controls'
 import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
 
@@ -45,9 +47,20 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
   const imageUrl = course.coverImage ? urlForImage(course.coverImage).width(2000).height(1125).url() : null
 
+  const navModules = (course.modules || []).map((mod) => ({
+    key: mod._key,
+    title: mod.title,
+    lessons: (mod.lessons || []).map((lessonItem) => ({
+      key: lessonItem._key,
+      title: lessonItem.title,
+      locked: !(lessonItem.isFreePreview || isEntitled),
+    })),
+  }))
+
   return (
     <>
       <PageHero eyebrow="Online Learning" heading={course.title} body={course.summary} />
+      <CourseNav courseSlug={slug} modules={navModules} />
 
       <section className="container" style={{ paddingBottom: 100 }}>
         {imageUrl ? (
@@ -70,7 +83,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
             <div style={{ marginTop: 32 }}>
               <h2 style={{ marginBottom: 24 }}>Course content</h2>
               {course.modules.map((mod) => (
-                <details key={mod._key} open={isEntitled} style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20 }}>
+                <details key={mod._key} id={`module-${mod._key}`} open={isEntitled} style={{ marginBottom: 20, borderTop: '1px solid var(--line)', paddingTop: 20, scrollMarginTop: 20 }}>
                   <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', fontSize: 20 }}>
                     {mod.title}
                     {mod.lessons ? ` (${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'})` : ''}
@@ -80,14 +93,17 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                     {(mod.lessons || []).map((lessonItem) => {
                       const unlocked = !!lessonItem.isFreePreview || isEntitled
                       return (
-                        <div key={lessonItem._key} style={{ marginBottom: 28 }}>
+                        <div key={lessonItem._key} id={`lesson-${lessonItem._key}`} style={{ marginBottom: 28, scrollMarginTop: 20 }}>
                           <p style={{ fontWeight: 600, marginBottom: unlocked ? 12 : 0 }}>
                             {lessonItem.title}
                             {lessonItem.durationMinutes ? ` — ${lessonItem.durationMinutes} min` : ''}
                             {lessonItem.isFreePreview ? ' (free preview)' : ''}
                           </p>
                           {unlocked ? (
-                            <LessonContent blocks={lessonItem.content} />
+                            <>
+                              <LessonContent blocks={lessonItem.content} />
+                              <LessonProgressControls courseSlug={slug} lessonKey={lessonItem._key} />
+                            </>
                           ) : (
                             <p style={{ fontSize: 13, color: 'var(--ink-soft)' }}>
                               {clientId
