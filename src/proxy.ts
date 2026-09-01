@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 /**
  * Gates Sanity Studio (/studio), the Cloudflare Stream upload API
  * (/api/cloudflare-stream/*), and the admin course preview
- * (/online-learning/preview/*) behind a single shared username/password,
- * prompted by the browser's own native Basic Auth dialog.
+ * (/online-learning/preview/*) behind Basic Auth, prompted by the
+ * browser's own native login dialog.
  *
  * Sanity's own project login already stops a stranger from actually
  * reading or writing content once inside Studio, but the upload API has
@@ -16,6 +16,15 @@ import { NextRequest, NextResponse } from "next/server";
  * full course content (including unpublished drafts) as if the visitor
  * were a fully-entitled client, bypassing the real Base44 entitlement
  * check entirely — that must never be reachable by an actual visitor.
+ *
+ * The course preview route accepts a SECOND, separate credential pair
+ * (COURSE_PREVIEW_BASIC_AUTH_USER/PASS) on top of the Studio one, so
+ * Oliver can hand a preview link + password to a few trusted reviewers
+ * without also handing them the Studio login — that would let them edit
+ * or delete real content, not just look at a course. /studio and the
+ * upload API only ever accept the Studio credentials. If the reviewer
+ * credentials aren't set, the preview route still works with the Studio
+ * login, same as before this existed.
  *
  * If STUDIO_BASIC_AUTH_USER/PASS aren't set (e.g. a preview deploy that
  * hasn't had them configured yet), this deliberately falls open rather
@@ -29,12 +38,16 @@ import { NextRequest, NextResponse } from "next/server";
  * below is unchanged by that rename.
  */
 export function proxy(request: NextRequest) {
-  const expectedUser = process.env.STUDIO_BASIC_AUTH_USER;
-  const expectedPass = process.env.STUDIO_BASIC_AUTH_PASS;
+  const studioUser = process.env.STUDIO_BASIC_AUTH_USER;
+  const studioPass = process.env.STUDIO_BASIC_AUTH_PASS;
 
-  if (!expectedUser || !expectedPass) {
+  if (!studioUser || !studioPass) {
     return NextResponse.next();
   }
+
+  const isCoursePreview = request.nextUrl.pathname.startsWith("/online-learning/preview");
+  const reviewerUser = process.env.COURSE_PREVIEW_BASIC_AUTH_USER;
+  const reviewerPass = process.env.COURSE_PREVIEW_BASIC_AUTH_PASS;
 
   const authHeader = request.headers.get("authorization");
   if (authHeader?.startsWith("Basic ")) {
@@ -42,14 +55,21 @@ export function proxy(request: NextRequest) {
     const separatorIndex = decoded.indexOf(":");
     const suppliedUser = separatorIndex === -1 ? decoded : decoded.slice(0, separatorIndex);
     const suppliedPass = separatorIndex === -1 ? "" : decoded.slice(separatorIndex + 1);
-    if (suppliedUser === expectedUser && suppliedPass === expectedPass) {
+
+    if (suppliedUser === studioUser && suppliedPass === studioPass) {
+      return NextResponse.next();
+    }
+
+    if (isCoursePreview && reviewerUser && reviewerPass && suppliedUser === reviewerUser && suppliedPass === reviewerPass) {
       return NextResponse.next();
     }
   }
 
   return new NextResponse("Authentication required", {
     status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Studio", charset="UTF-8"' },
+    headers: {
+      "WWW-Authenticate": `Basic realm="${isCoursePreview ? "Course preview" : "Studio"}", charset="UTF-8"`,
+    },
   });
 }
 
