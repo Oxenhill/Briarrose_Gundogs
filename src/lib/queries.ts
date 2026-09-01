@@ -172,3 +172,19 @@ export function getCourseBySlugPreview(slug: string) {
     { revalidate: 0 }
   )
 }
+
+// Whether reviewers (people signed in with the shared reviewer password, as
+// opposed to Oliver's own Studio login) are currently allowed into the course
+// preview — see siteSettings.coursePreviewReviewEnabled. Fetched separately
+// from getSiteSettings() (which caches for 60s) with `revalidate: 0`, so
+// flipping the toggle in Studio takes effect on the very next request rather
+// than up to a minute later. Defaults to closed if Sanity isn't reachable or
+// the field has never been set — fail closed, not open.
+export function getCoursePreviewReviewEnabled() {
+  return sanityFetch<boolean>(
+    `*[_type == "siteSettings"][0].coursePreviewReviewEnabled`,
+    {},
+    false,
+    { revalidate: 0 }
+  )
+}

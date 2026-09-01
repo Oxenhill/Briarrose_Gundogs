@@ -1,4 +1,5 @@
-import { getCoursesPreview } from '@/lib/queries'
+import { headers } from 'next/headers'
+import { getCoursesPreview, getCoursePreviewReviewEnabled } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { PillLink } from '@/components/pill'
 import { urlForImage } from '@/sanity/lib/image'
@@ -15,6 +16,12 @@ import Image from 'next/image'
  * engines. See preview/[slug]/page.tsx for the course detail equivalent,
  * which is where the actual "view it as an entitled client" behaviour
  * lives (this page just lists what's there to preview).
+ *
+ * Reviewer-authenticated requests (tagged by proxy.ts with the
+ * `x-course-preview-auth` header) additionally need Sanity's
+ * `coursePreviewReviewEnabled` toggle switched on — Oliver's own on/off
+ * switch for reviewer access. Requests on the Studio login skip this check
+ * entirely, so Oliver can always see this page.
  */
 export const metadata = {
   title: 'Course preview (admin only)',
@@ -32,6 +39,19 @@ export const metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function OnlineLearningPreviewIndex() {
+  const requestHeaders = await headers()
+  const isReviewer = requestHeaders.get('x-course-preview-auth') === 'reviewer'
+  const reviewEnabled = isReviewer ? await getCoursePreviewReviewEnabled() : true
+
+  if (!reviewEnabled) {
+    return (
+      <section className="container" style={{ padding: '120px 0', textAlign: 'center' }}>
+        <h1>Preview access is closed right now</h1>
+        <p style={{ color: 'var(--ink-soft)' }}>Check back once Oliver reopens it for review.</p>
+      </section>
+    )
+  }
+
   const courses = await getCoursesPreview()
 
   return (

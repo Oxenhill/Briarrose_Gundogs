@@ -31,6 +31,7 @@ export default defineType({
       // with the exact page it controls. If you're looking for text and
       // can't find it, it's very likely here.
     },
+    { name: 'coursePreview', title: 'Course Preview Access' },
     { name: 'seo', title: 'Branding & SEO' },
   ],
   // One fieldset per page keeps this tab navigable even with ~10 pages'
@@ -584,6 +585,24 @@ export default defineType({
       group: 'pageHeaders',
       fieldset: 'contactPage',
       initialValue: "Let's talk about your dog",
+    }),
+
+    // --- Course Preview Access ----------------------------------------------
+    // The one on/off switch for letting trusted reviewers into the course
+    // preview (/online-learning/preview) with the shared reviewer login (set
+    // up once as an environment variable, not here). This only affects
+    // people signing in with that reviewer password — you (via the Studio
+    // login) can always see the preview regardless of this switch. Flip it
+    // off between review rounds; no redeploy needed, it takes effect on the
+    // next request.
+    defineField({
+      name: 'coursePreviewReviewEnabled',
+      title: 'Course preview open for reviewers',
+      type: 'boolean',
+      group: 'coursePreview',
+      description:
+        'Turn ON to let people with the reviewer password view the course preview. Turn OFF to shut it again once you have the feedback you need — you can still see the preview yourself either way.',
+      initialValue: false,
     }),
 
     // --- Branding & SEO -----------------------------------------------------

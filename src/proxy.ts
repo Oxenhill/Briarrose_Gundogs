@@ -26,6 +26,14 @@ import { NextRequest, NextResponse } from "next/server";
  * credentials aren't set, the preview route still works with the Studio
  * login, same as before this existed.
  *
+ * A request that got in on the reviewer credentials (not the Studio ones)
+ * is tagged with an `x-course-preview-auth: reviewer` request header, which
+ * the preview pages read to check Sanity's `coursePreviewReviewEnabled`
+ * toggle (Site Settings → Course Preview Access in Studio) — Oliver's own
+ * on/off switch for reviewer access that doesn't need a Vercel visit or a
+ * redeploy. Studio-authenticated requests aren't tagged, so Oliver can
+ * always see the preview regardless of that toggle.
+ *
  * If STUDIO_BASIC_AUTH_USER/PASS aren't set (e.g. a preview deploy that
  * hasn't had them configured yet), this deliberately falls open rather
  * than locking everyone out by accident — Sanity's login is still there
@@ -61,7 +69,9 @@ export function proxy(request: NextRequest) {
     }
 
     if (isCoursePreview && reviewerUser && reviewerPass && suppliedUser === reviewerUser && suppliedPass === reviewerPass) {
-      return NextResponse.next();
+      const headers = new Headers(request.headers);
+      headers.set("x-course-preview-auth", "reviewer");
+      return NextResponse.next({ request: { headers } });
     }
   }
 

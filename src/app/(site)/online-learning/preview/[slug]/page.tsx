@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
+import { headers } from 'next/headers'
 import Image from 'next/image'
-import { getCourseBySlugPreview, getCoursesPreview } from '@/lib/queries'
+import { getCourseBySlugPreview, getCoursesPreview, getCoursePreviewReviewEnabled } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { Prose } from '@/components/prose'
 import { LessonContent } from '@/components/lesson-content'
@@ -17,6 +18,12 @@ import { urlForImage } from '@/sanity/lib/image'
  * Gated by proxy.ts (same Basic Auth as /studio). isEntitled is hardcoded
  * true here ONLY — this file has no bearing on the real entitlement check
  * in ../[slug]/page.tsx, which still asks Base44 fresh on every visit.
+ *
+ * Reviewer-authenticated requests (tagged by proxy.ts with the
+ * `x-course-preview-auth` header) additionally need Sanity's
+ * `coursePreviewReviewEnabled` toggle switched on — Oliver's own on/off
+ * switch for reviewer access. Requests on the Studio login skip this check
+ * entirely, so Oliver can always see this page.
  */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -41,6 +48,19 @@ export async function generateStaticParams() {
 export const dynamic = 'force-dynamic'
 
 export default async function CoursePreviewPage({ params }: { params: Promise<{ slug: string }> }) {
+  const requestHeaders = await headers()
+  const isReviewer = requestHeaders.get('x-course-preview-auth') === 'reviewer'
+  const reviewEnabled = isReviewer ? await getCoursePreviewReviewEnabled() : true
+
+  if (!reviewEnabled) {
+    return (
+      <section className="container" style={{ padding: '120px 0', textAlign: 'center' }}>
+        <h1>Preview access is closed right now</h1>
+        <p style={{ color: 'var(--ink-soft)' }}>Check back once Oliver reopens it for review.</p>
+      </section>
+    )
+  }
+
   const { slug } = await params
   const course = await getCourseBySlugPreview(slug)
   if (!course) notFound()
