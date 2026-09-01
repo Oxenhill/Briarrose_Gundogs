@@ -30,6 +30,25 @@ const components: PortableTextComponents = {
       <ol style={{ marginBottom: 20, paddingLeft: 22, color: 'var(--ink-soft)' }}>{children}</ol>
     ),
   },
+  marks: {
+    // @portabletext/react's built-in defaults already handle strong/em/
+    // underline — only the custom `link` annotation (added for the Course
+    // Builder's rich text editor) needs a component here.
+    link: ({ children, value }) => {
+      const href = (value as { href?: string } | undefined)?.href
+      if (!href) return <>{children}</>
+      const isExternal = /^https?:\/\//i.test(href)
+      return (
+        <a
+          href={href}
+          style={{ color: 'inherit', textDecoration: 'underline' }}
+          {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {children}
+        </a>
+      )
+    },
+  },
 }
 
 /** Renders Sanity portable-text blocks (bio, policy body, post body). */
