@@ -31,6 +31,7 @@ export default defineType({
       // with the exact page it controls. If you're looking for text and
       // can't find it, it's very likely here.
     },
+    { name: 'waitlist', title: 'Group Class Waitlist' },
     { name: 'coursePreview', title: 'Course Preview Access' },
     { name: 'seo', title: 'Branding & SEO' },
   ],
@@ -284,6 +285,96 @@ export default defineType({
       group: 'newsletter',
       description: 'Shown bottom-left of the footer on every page, e.g. a copyright line.',
       initialValue: '© Briarrose Gundogs',
+    }),
+
+    // --- Group Class Waitlist ------------------------------------------------
+    // The "how our group classes start" section shown on the homepage and
+    // at the top of /classes. Every field is optional: leave one blank and
+    // the site uses the default wording written for the waitlist launch
+    // (see `fallbackSiteSettings` in src/lib/fallback-content.ts).
+    defineField({
+      name: 'waitlistShow',
+      title: 'Show the waitlist section',
+      type: 'boolean',
+      group: 'waitlist',
+      description:
+        'Shows the "Group classes, built around you" section on the homepage and the Classes page. Switch off to hide it everywhere.',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'waitlistEyebrow',
+      title: 'Waitlist section — small label',
+      type: 'string',
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistHeading',
+      title: 'Waitlist section — headline',
+      type: 'string',
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistBody',
+      title: 'Waitlist section — supporting paragraph',
+      type: 'text',
+      rows: 3,
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistSteps',
+      title: 'Waitlist section — how it works (one line per step)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      group: 'waitlist',
+      description: 'Shown as numbered steps. Keep each to a sentence or two.',
+    }),
+    defineField({
+      name: 'waitlistDepositHeading',
+      title: 'Waitlist section — deposit box headline',
+      type: 'string',
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistDepositPoints',
+      title: 'Waitlist section — deposit rules (one line per point)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      group: 'waitlist',
+      description:
+        'A plain-English summary only. The full terms live in the booking app, so update them there first if they change.',
+    }),
+    defineField({
+      name: 'waitlistNote',
+      title: 'Waitlist section — small print under the buttons',
+      type: 'text',
+      rows: 2,
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistPrimaryLabel',
+      title: 'Main button — label',
+      type: 'string',
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistPrimaryUrl',
+      title: 'Main button — link',
+      type: 'url',
+      group: 'waitlist',
+      description: 'Use a class share link from the booking app (Group Classes → Offerings → share icon).',
+    }),
+    defineField({
+      name: 'waitlistSecondaryLabel',
+      title: 'Second button — label',
+      type: 'string',
+      group: 'waitlist',
+    }),
+    defineField({
+      name: 'waitlistSecondaryUrl',
+      title: 'Second button — link',
+      type: 'url',
+      group: 'waitlist',
+      description: 'Usually the "Share all waitlists" link from the booking app.',
     }),
 
     // --- Page Headers ---------------------------------------------------------

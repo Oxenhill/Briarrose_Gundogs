@@ -4,6 +4,7 @@ import { PillLink } from '@/components/pill'
 import { SplitSection } from '@/components/split-section'
 import { Marquee } from '@/components/marquee'
 import { ClassRow } from '@/components/class-row'
+import { WaitlistSection } from '@/components/waitlist-section'
 import { StarRating } from '@/components/star-rating'
 import { JsonLd } from '@/components/json-ld'
 import { buildMetadata } from '@/lib/seo'
@@ -92,7 +93,7 @@ export default async function HomePage() {
             <p>
               {site.homeClassesBody ||
                 site.classesPageBody ||
-                'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.'}
+                'Our regular classes and services are listed below.'}
             </p>
           </div>
           <div>
@@ -106,6 +107,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <WaitlistSection site={site} />
 
       {testimonial && (
         <section className="quote-band" data-reveal="">
@@ -143,7 +146,7 @@ export default async function HomePage() {
         }
         {...(ctaImageUrl
           ? { image: { src: ctaImageUrl, alt: site.businessName } }
-          : { placeholderTag: 'Photography placeholder' })}
+          : { markPanel: { src: '/brand/briarrose-crest.png', alt: `${site.businessName} crest` } })}
       />
 
       <JsonLd

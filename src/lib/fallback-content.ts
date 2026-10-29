@@ -61,11 +61,37 @@ export const fallbackSiteSettings = {
   logo: null as SanityImage,
   homeClassesEyebrow: 'Classes & Services',
   homeClassesHeading: 'Training built around your dog',
-  homeClassesBody: 'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.',
+  homeClassesBody: 'Our regular classes and services are listed below.',
   classesPageEyebrow: 'Classes & Services',
   classesPageHeading: 'Training built around your dog',
-  classesPageBody:
-    'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.',
+  classesPageBody: 'Our regular classes and services are listed below.',
+  // Group Class Waitlist section (homepage + /classes). Used whenever the
+  // matching Site Settings field is left blank. Keep the deposit lines in
+  // step with the terms in the booking app.
+  waitlistShow: true as boolean | null,
+  waitlistEyebrow: 'New group classes',
+  waitlistHeading: 'Group classes, built around you',
+  waitlistBody:
+    'Tell us which days and times you could make every week, and we start the class when enough dogs can make the same slot. Fewer missed sessions, settled groups, better progress.',
+  waitlistSteps: [
+    'Choose a class and tick every day and time you could make each week.',
+    'Join the queue with a small deposit (usually £10). It comes off the course price, and your place in the queue is set by when you paid.',
+    "When enough dogs are waiting for the same time, we set a start date. We aim to give at least three weeks' notice.",
+    "You're invited by email and in the app. Your place is held for 48 hours: pay the rest of the course fee to book.",
+  ] as string[] | null,
+  waitlistDepositHeading: 'Your deposit is protected',
+  waitlistDepositPoints: [
+    "Withdraw before you're invited and it's refunded in full.",
+    "If no class is offered within six months, it's refunded automatically.",
+    "You never lose it if we cancel the class, if you're offered a time you didn't choose, or within 14 days of paying.",
+    "It may only be kept if you're offered a time you chose and then don't book.",
+  ] as string[] | null,
+  waitlistNote:
+    "You can see class times and prices without signing up; you only need a free account when you join. Full terms are shown in the booking app before you pay. When a class fills, the next group forms from the people still waiting.",
+  waitlistPrimaryLabel: 'Join the Beginners waitlist',
+  waitlistPrimaryUrl: 'https://booking.dogsmarttrainingbehaviour.co.uk/waitlist/beginners-gundog-group-class',
+  waitlistSecondaryLabel: 'See all waitlists',
+  waitlistSecondaryUrl: 'https://booking.dogsmarttrainingbehaviour.co.uk/waitlist',
   dogsPageEyebrow: 'Our Dogs',
   dogsPageHeading: 'The dogs behind the training',
   dogsPageBody: '',

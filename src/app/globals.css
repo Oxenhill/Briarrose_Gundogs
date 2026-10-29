@@ -535,6 +535,125 @@
     color: var(--deep);
   }
 
+  /* group class waitlist */
+  .waitlist {
+    background: var(--panel);
+    border-block: 1px solid var(--line);
+    padding: 110px 0;
+  }
+  .waitlist--compact {
+    padding: 80px 0;
+  }
+  .waitlist-head {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 56px;
+  }
+  .waitlist-head .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .waitlist-head h2 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    margin-bottom: 16px;
+  }
+  .waitlist-head p {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+  }
+  .waitlist-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .waitlist-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .waitlist-steps li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+    font-size: 15.5px;
+  }
+  .waitlist-steps li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .waitlist-steps .idx {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .waitlist-deposit {
+    background: var(--deep);
+    color: var(--on-deep);
+    padding: 32px 30px;
+  }
+  .waitlist-deposit h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .waitlist-deposit ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .waitlist-deposit li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 12px;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .waitlist-deposit li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 8px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+  .waitlist-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 52px;
+  }
+  .waitlist-note {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    max-width: 60ch;
+    margin: 20px auto 0;
+  }
+  @media (max-width: 900px) {
+    .waitlist {
+      padding: 80px 0;
+    }
+    .waitlist-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .waitlist-steps li {
+      grid-template-columns: 36px 1fr;
+    }
+  }
+
   /* pull quote */
   .quote-band {
     background: var(--deep);

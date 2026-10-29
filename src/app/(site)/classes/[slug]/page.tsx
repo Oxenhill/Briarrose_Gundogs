@@ -38,6 +38,9 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
   // This class's own Dog Smart link, if set, otherwise the site-wide one.
   const bookingUrl = item.bookingUrl && item.bookingUrl !== '#' ? item.bookingUrl : site.bookingUrl
 
+  // A class whose link points at a booking-app waitlist is joined, not booked.
+  const isWaitlist = Boolean(bookingUrl && bookingUrl.includes('/waitlist'))
+
   return (
     <>
       <PageHero eyebrow={item.stageLabel || 'Class'} heading={item.title} body={item.summary} />
@@ -54,11 +57,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
               priority
             />
           </div>
-        ) : (
-          <div className="frame ph-texture" style={{ aspectRatio: '16/9', marginBottom: 48 }}>
-            <span className="tag">Photography placeholder</span>
-          </div>
-        )}
+        ) : null}
 
         {item.description && (
           <div style={{ maxWidth: 640, margin: '0 auto 40px' }}>
@@ -92,7 +91,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
           )}
           {bookingUrl && bookingUrl !== '#' ? (
             <PillLink href={bookingUrl} solid external>
-              Book This Class
+              {isWaitlist ? 'Join the Waitlist' : 'Book This Class'}
             </PillLink>
           ) : (
             <PillLink href="/contact" solid>

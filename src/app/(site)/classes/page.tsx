@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getClasses, getSiteSettings } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { ClassRow } from '@/components/class-row'
+import { WaitlistSection } from '@/components/waitlist-section'
 import { buildMetadata } from '@/lib/seo'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,12 +22,10 @@ export default async function ClassesPage() {
       <PageHero
         eyebrow={site.classesPageEyebrow || 'Classes & Services'}
         heading={site.classesPageHeading || 'Training built around your dog'}
-        body={
-          site.classesPageBody ||
-          'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.'
-        }
+        body={site.classesPageBody || 'Our regular classes and services are listed below.'}
       />
-      <section className="list-section" style={{ paddingTop: 0 }}>
+      <WaitlistSection site={site} compact />
+      <section className="list-section">
         <div className="container">
           {classes.length === 0 ? (
             <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
