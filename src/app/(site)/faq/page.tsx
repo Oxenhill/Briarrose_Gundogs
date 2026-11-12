@@ -3,6 +3,7 @@ import { getFaqs, getSiteSettings } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { JsonLd } from '@/components/json-ld'
 import { buildMetadata } from '@/lib/seo'
+import { AskPrompt } from '@/components/ask-prompt'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -60,6 +61,7 @@ export default async function FaqPage() {
           })),
         }}
       />
+      <AskPrompt heading="Didn't find your answer?" />
     </>
   )
 }

@@ -6,6 +6,7 @@ import { Prose } from '@/components/prose'
 import { JsonLd } from '@/components/json-ld'
 import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
+import { AskPrompt } from '@/components/ask-prompt'
 
 export async function generateMetadata(): Promise<Metadata> {
   const trainer = await getTrainerProfile()
@@ -94,6 +95,7 @@ export default async function AboutPage() {
           },
         }}
       />
+      <AskPrompt />
     </>
   )
 }

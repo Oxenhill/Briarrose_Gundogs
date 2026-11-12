@@ -3,6 +3,7 @@ import { getClasses, getSiteSettings } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { ClassRow } from '@/components/class-row'
 import { buildMetadata } from '@/lib/seo'
+import { AskPrompt } from '@/components/ask-prompt'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -37,6 +38,7 @@ export default async function ClassesPage() {
           )}
         </div>
       </section>
+      <AskPrompt heading="Not sure where to start?" body="Tell us about your dog and ask which class or package fits. You'll get an answer straight away, and anything that needs Oliver goes straight to him." />
     </>
   )
 }

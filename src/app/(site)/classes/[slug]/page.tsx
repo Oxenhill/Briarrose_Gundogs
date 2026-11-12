@@ -8,6 +8,8 @@ import { JsonLd } from '@/components/json-ld'
 import { Prose } from '@/components/prose'
 import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
+import { AskPrompt } from '@/components/ask-prompt'
+import { ASK_URL } from '@/lib/ask'
 
 export async function generateStaticParams() {
   const classes = await getClasses()
@@ -95,8 +97,8 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
               Book This Class
             </PillLink>
           ) : (
-            <PillLink href="/contact" solid>
-              Enquire
+            <PillLink href={ASK_URL} solid external>
+              Ask About This Class
             </PillLink>
           )}
         </div>
@@ -124,6 +126,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
             : {}),
         }}
       />
+      <AskPrompt heading="Questions about this class?" />
     </>
   )
 }
