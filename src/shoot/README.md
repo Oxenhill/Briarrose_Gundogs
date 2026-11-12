@@ -6,7 +6,7 @@ Served at `shoot.briarrosegundogs.co.uk` (the proxy sends `/` there to `/shoot`,
 
 - **Data:** its own Neon Postgres database (free plan), kept apart from all Dog Smart data. Env var `SHOOT_DATABASE_DATABASE_URL` (set by the Vercel Neon integration; `SHOOT_DATABASE_URL` for local). It sets itself up on first use (`src/shoot/bootstrap.ts`).
 - **Sign-in:** mobile number + 4-digit PIN (older 6-digit PINs still sign in) (scrypt-hashed), 180-day cookie, lock after 5 wrong PINs. No SMS or email is ever sent.
-- **Joining:** one-time personal invites, PIN reset links, a shared WhatsApp group link (optional approval), and a one-time owner link.
+- **Joining:** a shared 7-day admin link (keepers/owner only; joiners become admins), one-time personal invites, PIN reset links, a shared WhatsApp group link (optional approval), and a one-time owner link.
 - **Roles:** keeper, underkeeper, admin, deputy, member, plus `is_owner` (Oliver) — only the owner changes keeper/underkeeper. Checked in every server action.
 - **Bag records:** drives (keeper/admins set up, reorder, retire), per-drive or whole-day recording by keepers/admins/deputies, season stats for everyone (`/shoot/stats`).
 - **Spec:** the "WGSC Shoot Team App — Spec & Privacy Notice" doc.

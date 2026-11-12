@@ -225,13 +225,13 @@ function ContactPick({ nameField, phoneField }: { nameField: string; phoneField:
   )
 }
 
-export function JoinForm({ token, kind }: { token: string; kind: 'invite' | 'owner' | 'group' }) {
+export function JoinForm({ token, kind }: { token: string; kind: 'invite' | 'owner' | 'group' | 'admin' }) {
   const [state, action, pending] = useActionState(joinTeam, undefined)
   return (
     <form onSubmit={keep(action)}>
       <input type="hidden" name="token" value={token} />
       <div className="s-card">
-        <h1>{kind === 'owner' ? 'Set up your account' : 'Join the team'}</h1>
+        <h1>{kind === 'owner' ? 'Set up your account' : kind === 'admin' ? 'Join as an admin' : 'Join the team'}</h1>
         <p className="s-muted">Takes about two minutes. You only do this once.</p>
         <DetailsFields />
         <h2>Your PIN</h2>
