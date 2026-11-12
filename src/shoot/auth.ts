@@ -47,8 +47,14 @@ export const canMakeAdmin = (p: Person) => p.is_owner || isKeeper(p)
 export const canSetKeeper = (p: Person) => p.is_owner
 
 // ---------- PINs ----------
+/** New PINs are 4 digits. */
 export function validPin(pin: string) {
-  return /^\d{6}$/.test(pin)
+  return /^\d{4}$/.test(pin)
+}
+
+/** Sign-in also accepts the 6-digit PINs chosen before the switch to 4 digits. */
+export function validSignInPin(pin: string) {
+  return /^(\d{4}|\d{6})$/.test(pin)
 }
 
 export async function hashPin(pin: string): Promise<string> {
