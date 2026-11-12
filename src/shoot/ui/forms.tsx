@@ -1,6 +1,6 @@
 'use client'
 
-import { startTransition, useActionState, useState, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useState, type FormEvent, type MouseEvent } from 'react'
 import Link from 'next/link'
 import {
   changePin,
@@ -26,17 +26,17 @@ function Msg({ state }: { state: FormState }) {
   return null
 }
 
-function PinFields({ label = 'Choose a 6-digit PIN' }: { label?: string }) {
+function PinFields({ label = 'Choose a 4-digit PIN' }: { label?: string }) {
   return (
     <>
       <label className="s-field">
         <span>{label}</span>
-        <input type="password" name="pin" inputMode="numeric" pattern="\d{6}" maxLength={6} autoComplete="new-password" required className="s-pin" />
-        <small>Six numbers you’ll remember. Don’t use your bank PIN.</small>
+        <input type="password" name="pin" inputMode="numeric" pattern="\d{4}" maxLength={4} autoComplete="new-password" required className="s-pin" />
+        <small>Four numbers you’ll remember. Don’t use your bank card PIN.</small>
       </label>
       <label className="s-field">
         <span>Type the PIN again</span>
-        <input type="password" name="pin2" inputMode="numeric" pattern="\d{6}" maxLength={6} autoComplete="new-password" required className="s-pin" />
+        <input type="password" name="pin2" inputMode="numeric" pattern="\d{4}" maxLength={4} autoComplete="new-password" required className="s-pin" />
       </label>
     </>
   )
@@ -54,8 +54,8 @@ export function SignInForm() {
         <input type="tel" name="mobile" inputMode="tel" autoComplete="tel" required placeholder="07700 900123" />
       </label>
       <label className="s-field">
-        <span>Your 6-digit PIN</span>
-        <input type="password" name="pin" inputMode="numeric" pattern="\d{6}" maxLength={6} autoComplete="current-password" required className="s-pin" />
+        <span>Your 4-digit PIN</span>
+        <input type="password" name="pin" inputMode="numeric" pattern="\d{4}|\d{6}" maxLength={6} autoComplete="current-password" required className="s-pin" />
       </label>
       <Msg state={state} />
       <button className="s-btn full" disabled={pending}>{pending ? 'Signing in…' : 'Sign in'}</button>
@@ -127,6 +127,7 @@ function DetailsFields({ d = {} }: { d?: DetailsDefaults }) {
       {u18 && (
         <div className="s-alert">
           <strong>Parent or guardian</strong>
+          <ContactPick nameField="guardian_name" phoneField="guardian_phone" />
           <label className="s-field">
             <span>Their name</span>
             <input type="text" name="guardian_name" defaultValue={d.guardian_name || ''} required />
@@ -141,6 +142,7 @@ function DetailsFields({ d = {} }: { d?: DetailsDefaults }) {
           </label>
         </div>
       )}
+      <ContactPick nameField="emergency_name" phoneField="emergency_phone" />
       <label className="s-field">
         <span>{u18 ? 'Emergency contact (usually the parent or guardian)' : 'Emergency contact name'}</span>
         <input type="text" name="emergency_name" required defaultValue={d.emergency_name} />
@@ -180,6 +182,49 @@ function DetailsFields({ d = {} }: { d?: DetailsDefaults }) {
   )
 }
 
+// ------------------------------------------------------------------ pick from phone contacts
+
+type PickedContact = { name?: string[]; tel?: string[] }
+type ContactsNav = Navigator & { contacts?: { select: (props: string[], opts: { multiple: boolean }) => Promise<PickedContact[]> } }
+
+function bestNumber(tels: string[] = []): string {
+  const clean = tels.map((t) => t.trim()).filter(Boolean)
+  return clean.find((t) => /^(\+44\s?7|07)/.test(t.replace(/[\s()-]/g, ''))) || clean[0] || ''
+}
+
+/**
+ * "Choose from my contacts" — uses the phone's own contact picker. Works on Android (Chrome);
+ * iPhones don't allow websites to open contacts, so the button simply doesn't appear there.
+ */
+function ContactPick({ nameField, phoneField }: { nameField: string; phoneField: string }) {
+  const [supported, setSupported] = useState(false)
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setSupported(!!(navigator as ContactsNav).contacts && 'ContactsManager' in window))
+    return () => cancelAnimationFrame(raf)
+  }, [])
+  if (!supported) return null
+
+  async function pick(e: MouseEvent<HTMLButtonElement>) {
+    const form = e.currentTarget.form
+    try {
+      const [c] = (await (navigator as ContactsNav).contacts!.select(['name', 'tel'], { multiple: false })) || []
+      if (!c || !form) return
+      const name = form.elements.namedItem(nameField) as HTMLInputElement | null
+      const phone = form.elements.namedItem(phoneField) as HTMLInputElement | null
+      if (name && c.name?.[0]) name.value = c.name[0]
+      if (phone) phone.value = bestNumber(c.tel)
+    } catch {
+      // Cancelled or not allowed — nothing to do.
+    }
+  }
+
+  return (
+    <button type="button" className="s-btn ghost full" onClick={pick} style={{ marginTop: 8 }}>
+      Choose from my contacts
+    </button>
+  )
+}
+
 export function JoinForm({ token, kind }: { token: string; kind: 'invite' | 'owner' | 'group' }) {
   const [state, action, pending] = useActionState(joinTeam, undefined)
   return (
@@ -210,7 +255,7 @@ export function ResetForm({ token }: { token: string }) {
     <form onSubmit={keep(action)} className="s-card">
       <input type="hidden" name="token" value={token} />
       <h1>Choose a new PIN</h1>
-      <PinFields label="New 6-digit PIN" />
+      <PinFields label="New 4-digit PIN" />
       <Msg state={state} />
       <button className="s-btn full" disabled={pending}>{pending ? 'Saving…' : 'Save and sign in'}</button>
     </form>
@@ -237,7 +282,7 @@ export function ChangePinForm() {
         <span>Current PIN</span>
         <input type="password" name="current" inputMode="numeric" maxLength={6} autoComplete="current-password" required className="s-pin" />
       </label>
-      <PinFields label="New 6-digit PIN" />
+      <PinFields label="New 4-digit PIN" />
       <Msg state={state} />
       <button className="s-btn ghost full" disabled={pending}>Change PIN</button>
     </form>

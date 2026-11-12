@@ -20,6 +20,7 @@ import {
   requireMember,
   startSession,
   validPin,
+  validSignInPin,
   type Person,
 } from './auth'
 import { parseDetails } from './details'
@@ -41,7 +42,7 @@ async function origin() {
 export async function signIn(_: FormState, fd: FormData): Promise<FormState> {
   const mobile = normaliseMobile(String(fd.get('mobile') || ''))
   const pin = String(fd.get('pin') || '').trim()
-  if (!mobile || !validPin(pin)) return { error: 'Enter your mobile number and your 6-digit PIN.' }
+  if (!mobile || !validSignInPin(pin)) return { error: 'Enter your mobile number and your 4-digit PIN.' }
 
   const p = await one<{ id: string; pin_hash: string; failed_pins: number; locked: boolean }>(
     'select id, pin_hash, failed_pins, locked from shoot_people where mobile = $1',
@@ -97,7 +98,7 @@ export async function joinTeam(_: FormState, fd: FormData): Promise<FormState> {
 
   const pin = String(fd.get('pin') || '').trim()
   const pin2 = String(fd.get('pin2') || '').trim()
-  if (!validPin(pin)) return { error: 'Your PIN must be exactly 6 numbers.' }
+  if (!validPin(pin)) return { error: 'Your PIN must be exactly 4 numbers.' }
   if (pin !== pin2) return { error: 'The two PINs don’t match.' }
   if (fd.get('privacy') !== 'on') return { error: 'Please tick to say you’ve read how your information is used.' }
 
@@ -148,7 +149,7 @@ export async function resetPinWithLink(_: FormState, fd: FormData): Promise<Form
   const token = String(fd.get('token') || '')
   const pin = String(fd.get('pin') || '').trim()
   const pin2 = String(fd.get('pin2') || '').trim()
-  if (!validPin(pin)) return { error: 'Your PIN must be exactly 6 numbers.' }
+  if (!validPin(pin)) return { error: 'Your PIN must be exactly 4 numbers.' }
   if (pin !== pin2) return { error: 'The two PINs don’t match.' }
 
   const link = await one<{ person_id: string }>(
@@ -356,7 +357,7 @@ export async function changePin(_: FormState, fd: FormData): Promise<FormState> 
   const pin2 = String(fd.get('pin2') || '').trim()
   const row = await one<{ pin_hash: string }>('select pin_hash from shoot_people where id = $1', [me.id])
   if (!row || !(await checkPin(current, row.pin_hash))) return { error: 'Your current PIN isn’t right.' }
-  if (!validPin(pin)) return { error: 'Your new PIN must be exactly 6 numbers.' }
+  if (!validPin(pin)) return { error: 'Your new PIN must be exactly 4 numbers.' }
   if (pin !== pin2) return { error: 'The two new PINs don’t match.' }
   await q('update shoot_people set pin_hash = $2 where id = $1', [me.id, await hashPin(pin)])
   return { ok: 'PIN changed.' }
