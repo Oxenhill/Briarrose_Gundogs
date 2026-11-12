@@ -32,10 +32,10 @@ export async function POST(request: Request) {
       // would otherwise fail to typecheck against a hand-written params object.
       // Cast the params object: @sanity/client's typed-GROQ params type only
       // accepts params matching generated query types (this project doesn't
-      // run `sanity typegen`), so a hand-written params object needs an `any`
-      // escape hatch here — the query and params are correct at runtime either way.
+      // run `sanity typegen`), so a hand-written params object needs a narrow `never`
+      // parameter escape hatch here — the query and params are correct at runtime either way.
       const findByEmail: string = `*[_type == "newsletterSignup" && lower(email) == lower($email)][0]{_id, unsubscribeToken}`
-      const existing = (await writeClient.fetch(findByEmail, { email } as any, {})) as {
+      const existing = (await writeClient.fetch(findByEmail, { email } as never, {})) as {
         _id: string
         unsubscribeToken: string
       } | null

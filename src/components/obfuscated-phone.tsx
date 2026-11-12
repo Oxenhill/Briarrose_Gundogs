@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
 // Mirror of the shift used in src/lib/phone-obfuscate.ts — keep both in
 // sync if either changes.
 const SHIFT = 5
+const subscribe = () => () => {}
+const serverPhone = () => null
 
 function decode(encoded: string): string | null {
   try {
@@ -41,11 +43,7 @@ export function ObfuscatedPhone({
   encoded: string
   className?: string
 }) {
-  const [phone, setPhone] = useState<string | null>(null)
-
-  useEffect(() => {
-    setPhone(decode(encoded))
-  }, [encoded])
+  const phone = useSyncExternalStore(subscribe, () => decode(encoded), serverPhone)
 
   return (
     <a className={className} href={phone ? `tel:${phone.replace(/\s+/g, '')}` : undefined}>

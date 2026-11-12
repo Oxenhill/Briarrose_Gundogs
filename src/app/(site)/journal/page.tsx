@@ -1,3 +1,5 @@
+import { getLearningCentreJournal } from '@/lib/learning-centre'
+import { DeliveredJournalIndex } from '@/components/delivered-journal'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,6 +23,8 @@ function formatDate(iso: string | undefined) {
 }
 
 export default async function JournalPage() {
+  const delivery = await getLearningCentreJournal()
+  if (delivery) return <DeliveredJournalIndex delivery={delivery} />
   const [posts, site] = await Promise.all([getPosts(), getSiteSettings()])
 
   return (

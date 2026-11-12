@@ -28,10 +28,10 @@ export async function GET(request: Request) {
   // would otherwise fail to typecheck against a hand-written params object.
   // Cast the params object: @sanity/client's typed-GROQ params type only
   // accepts params matching generated query types (this project doesn't
-  // run `sanity typegen`), so a hand-written params object needs an `any`
-  // escape hatch here — the query and params are correct at runtime either way.
+  // run `sanity typegen`), so a hand-written params object needs a narrow `never`
+  // parameter escape hatch here — the query and params are correct at runtime either way.
   const findByToken: string = `*[_type == "newsletterSignup" && unsubscribeToken == $token][0]{_id}`
-  const entry = (await writeClient.fetch(findByToken, { token } as any, {})) as { _id: string } | null
+  const entry = (await writeClient.fetch(findByToken, { token } as never, {})) as { _id: string } | null
 
   if (!entry) {
     return page('Link no longer valid', "This unsubscribe link has already been used or isn't recognised.")

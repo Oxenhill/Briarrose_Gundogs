@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import Image from 'next/image'
-import { getCourseBySlugPreview, getCoursesPreview, getCoursePreviewReviewEnabled } from '@/lib/queries'
+import { getCourseBySlugPreview, getCoursePreviewReviewEnabled } from '@/lib/queries'
 import { PageHero } from '@/components/page-hero'
 import { Prose } from '@/components/prose'
 import { LessonContent } from '@/components/lesson-content'
