@@ -9,7 +9,8 @@ types.setTypeParser(1082, (v) => v)
 const globalForPool = globalThis as unknown as { shootPool?: Pool; shootReady?: Promise<void> }
 
 function makePool() {
-  const connectionString = process.env.SHOOT_DATABASE_URL || process.env.DATABASE_URL
+  // SHOOT_DATABASE_DATABASE_URL is the pooled Neon URL added by the Vercel Neon integration (prefix SHOOT_DATABASE).
+  const connectionString = process.env.SHOOT_DATABASE_DATABASE_URL || process.env.SHOOT_DATABASE_URL
   if (!connectionString) {
     throw new Error('SHOOT_DATABASE_URL is not set — the shoot app has no database to talk to.')
   }
