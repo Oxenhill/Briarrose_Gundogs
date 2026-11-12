@@ -1,3 +1,4 @@
+import { getLearningCentreJournal } from '@/lib/learning-centre'
 import type { MetadataRoute } from 'next'
 import { getClasses, getDogs, getPosts, getPolicies } from '@/lib/queries'
 import { siteUrl } from '@/lib/seo'
@@ -18,10 +19,11 @@ const STATIC_ROUTES = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl()
+  const delivery = await getLearningCentreJournal()
   const [classes, dogs, posts, policies] = await Promise.all([
     getClasses(),
     getDogs(),
-    getPosts(),
+    delivery ? Promise.resolve([]) : getPosts(),
     getPolicies(),
   ])
 
@@ -44,7 +46,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }))
 
-  const postEntries: MetadataRoute.Sitemap = posts.map((p) => ({
+  const postEntries: MetadataRoute.Sitemap = delivery ? delivery.state.items
+    .filter((item) => item.mode === 'canonical_full')
+    .map((item) => ({ url: item.canonical.url, lastModified: new Date(item.publishedAt), changeFrequency: 'yearly' as const, priority: 0.6 })) : posts.map((p) => ({
     url: `${base}/journal/${p.slug.current}`,
     lastModified: p.publishedAt ? new Date(p.publishedAt) : undefined,
     changeFrequency: 'yearly',

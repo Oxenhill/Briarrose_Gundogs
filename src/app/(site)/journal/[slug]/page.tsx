@@ -1,3 +1,5 @@
+import { getLearningCentreJournal, learningCentreJournalEnabled } from '@/lib/learning-centre'
+import { deliveredMetadata, DeliveredJournalArticle } from '@/components/delivered-journal'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
@@ -9,6 +11,7 @@ import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
 
 export async function generateStaticParams() {
+  if (learningCentreJournalEnabled()) return []
   const posts = await getPosts()
   return posts.map((p) => ({ slug: p.slug.current }))
 }
@@ -19,6 +22,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
+  const delivery = await getLearningCentreJournal()
+  if (delivery) {
+    const item = delivery.state.items.find((entry) => entry.route === `/journal/${slug}`)
+    return item ? deliveredMetadata(item) : { title: 'Journal entry unavailable', robots: { index: false, follow: false } }
+  }
   const post = await getPostBySlug(slug)
   if (!post) return {}
   return buildMetadata({ title: post.title, description: post.excerpt, path: `/journal/${slug}` })
@@ -26,6 +34,13 @@ export async function generateMetadata({
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const delivery = await getLearningCentreJournal()
+  if (delivery) {
+    if (delivery.status === 'unavailable') return <><PageHero eyebrow="Journal" heading="Journal temporarily unavailable" /><p className="container" role="status">Please try again shortly.</p></>
+    const item = delivery.state.items.find((entry) => entry.route === `/journal/${slug}`)
+    if (!item) notFound()
+    return <DeliveredJournalArticle item={item} status={delivery.status} />
+  }
   const [post, site] = await Promise.all([getPostBySlug(slug), getSiteSettings()])
   if (!post) notFound()
 

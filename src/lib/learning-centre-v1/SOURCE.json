@@ -1,0 +1,11 @@
+{
+  "repository": "Oxenhill/dog-smart-learning-centre",
+  "contract": "learning-centre.delivery.v1",
+  "files": {
+    "brandDeliveryV1.ts": "472a733c445a2edfb9e5675ff9499d2a2782080c60ed97355d303a750fa3965a",
+    "brandDeliveryV1.schema.json": "1ce79cd0544d51e452004cea5d2281ed28efb907076839d1321e806da3ea247e",
+    "deliveryConsumer.ts": "c1e11daa1e4ed290ee9394368c13399216d630d432c0cc52d65c069945acd8fe",
+    "deliveryIntegrity.ts": "9f079a5adfccfd005d8d24c7c8943183e346f14bdcd1e6beda0683b672918931",
+    "deliveryClient.ts": "c9e78fbd5a5ce1fa35f6d8170e93b54f06b6ef633b241dba8aff044559375547"
+  }
+}
