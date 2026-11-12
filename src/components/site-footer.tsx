@@ -2,7 +2,6 @@ import Link from 'next/link'
 import type { SiteSettings } from '@/lib/fallback-content'
 import { SocialLinks } from '@/components/social-links'
 import { ASK_URL } from '@/lib/ask'
-import { NewsletterForm } from '@/components/newsletter-form'
 import { getPolicies } from '@/lib/queries'
 
 const EXPLORE_LINKS = [
@@ -27,26 +26,6 @@ export async function SiteFooter({ site }: { site: SiteSettings }) {
   return (
     <footer className="site-footer">
       <div className="container">
-        <div className="foot-top">
-          <div style={{ textAlign: 'center', maxWidth: 420 }}>
-            <h4
-              style={{
-                fontSize: 11.5,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                color: 'var(--ink-soft)',
-                marginBottom: 16,
-              }}
-            >
-              {site.newsletterHeadline}
-            </h4>
-            <p style={{ fontSize: 14, color: 'var(--ink-soft)', marginBottom: 20 }}>
-              {site.newsletterBody}
-            </p>
-            <NewsletterForm />
-          </div>
-        </div>
-
         <div className="foot-cols">
           <div>
             <h4>Explore</h4>
