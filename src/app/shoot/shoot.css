@@ -122,3 +122,14 @@
 .s-badge.u18 { background: var(--amber-bg); color: var(--amber); }
 .s-gap { height: 12px; }
 .s-prose p, .s-prose li { margin: .6rem 0; }
+.s-count { width: 4.2ch; min-height: 52px; text-align: center; font: inherit; font-size: 1.3rem; font-weight: 700; border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+.s-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.s-table th, .s-table td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.s-table th:first-child, .s-table td:first-child { text-align: left; white-space: normal; }
+.s-table th { font-size: .78rem; color: var(--soft); font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+.s-scroll { overflow-x: auto; }
+.s-big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.s-big div { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; text-align: center; }
+.s-big strong { display: block; font-size: 1.5rem; }
+.s-big span { font-size: .8rem; color: var(--soft); }
+.s-table td:first-child { min-width: 7.5rem; }

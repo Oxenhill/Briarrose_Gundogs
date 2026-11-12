@@ -83,3 +83,38 @@ create table if not exists shoot_attendance (
 
 create index if not exists shoot_attendance_date_idx on shoot_attendance(date_id);
 create index if not exists shoot_sessions_person_idx on shoot_sessions(person_id);
+
+-- ---------------------------------------------------------------- Phase 2: bag records
+
+-- Drives, set up by the keeper/admins. Retired drives keep their history.
+create table if not exists shoot_drives (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  sort_order int not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+create unique index if not exists shoot_drives_name_idx on shoot_drives (lower(name));
+
+-- How a day was recorded: drive by drive, or one whole-day total.
+alter table shoot_dates add column if not exists bag_mode text check (bag_mode in ('drives', 'total'));
+alter table shoot_dates add column if not exists bag_updated_by uuid references shoot_people(id) on delete set null;
+alter table shoot_dates add column if not exists bag_updated_at timestamptz;
+
+-- One row per drive done that day (drive_id set), or a single whole-day row (drive_id null).
+create table if not exists shoot_bag (
+  id uuid primary key default gen_random_uuid(),
+  date_id uuid not null references shoot_dates(id) on delete cascade,
+  drive_id uuid references shoot_drives(id) on delete restrict,
+  position int not null default 0,
+  shots int not null default 0 check (shots between 0 and 10000),
+  pheasant int not null default 0 check (pheasant between 0 and 5000),
+  partridge int not null default 0 check (partridge between 0 and 5000),
+  duck int not null default 0 check (duck between 0 and 5000),
+  pigeon int not null default 0 check (pigeon between 0 and 5000),
+  other int not null default 0 check (other between 0 and 5000),
+  other_note text
+);
+create unique index if not exists shoot_bag_drive_once_idx on shoot_bag (date_id, drive_id) where drive_id is not null;
+create unique index if not exists shoot_bag_total_once_idx on shoot_bag (date_id) where drive_id is null;
+create index if not exists shoot_bag_drive_idx on shoot_bag (drive_id);

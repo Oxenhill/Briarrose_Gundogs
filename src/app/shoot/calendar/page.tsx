@@ -15,6 +15,7 @@ export default async function CalendarPage() {
       <p className="s-muted s-small">
         Green = shoot day. Red and crossed out = cancelled (people had already said they were coming; tap to bring it back).
       </p>
+      <a href="/shoot/drives" className="s-btn ghost full" style={{ marginTop: 8 }}>Set up drives</a>
       <Nav me={me} active="calendar" />
     </main>
   )
