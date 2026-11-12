@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { isAdmin, type Person } from '../auth'
 
-type Tab = 'dates' | 'calendar' | 'people' | 'invite' | 'me'
+type Tab = 'dates' | 'calendar' | 'people' | 'invite' | 'stats' | 'me'
 
 const icons: Record<Tab, React.ReactNode> = {
   dates: (
@@ -16,6 +16,9 @@ const icons: Record<Tab, React.ReactNode> = {
   invite: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
   ),
+  stats: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 20V11M12 20V5M19 20v-6" /></svg>
+  ),
   me: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="4" /><path d="M4 21c1-4 4.3-6 8-6s7 2 8 6" /></svg>
   ),
@@ -24,7 +27,7 @@ const icons: Record<Tab, React.ReactNode> = {
 export function Nav({ me, active }: { me: Person; active: Tab }) {
   const admin = isAdmin(me)
   const tabs: { tab: Tab; href: string; label: string }[] = [
-    { tab: 'dates', href: '/shoot', label: 'Shoot days' },
+    { tab: 'dates', href: '/shoot', label: admin ? 'Days' : 'Shoot days' },
     ...(admin
       ? [
           { tab: 'calendar' as Tab, href: '/shoot/calendar', label: 'Add dates' },
@@ -32,7 +35,8 @@ export function Nav({ me, active }: { me: Person; active: Tab }) {
           { tab: 'invite' as Tab, href: '/shoot/invite', label: 'Invite' },
         ]
       : []),
-    { tab: 'me', href: '/shoot/me', label: 'My details' },
+    { tab: 'stats', href: '/shoot/stats', label: 'Stats' },
+    { tab: 'me', href: '/shoot/me', label: admin ? 'Me' : 'My details' },
   ]
   return (
     <nav className="s-nav" aria-label="Main">

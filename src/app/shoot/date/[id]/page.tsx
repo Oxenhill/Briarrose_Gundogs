@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { isAdmin, isKeeper, requireMember } from '@/shoot/auth'
+import { isAdmin, isDeputy, isKeeper, requireMember } from '@/shoot/auth'
+import { dayBag } from '@/shoot/bag'
+import { BagSummary } from '@/shoot/ui/bagsummary'
 import { attendees, dateSummary, whoCanIAsk, type Attendee, type AskPerson } from '@/shoot/data'
 import { setDateNeeds } from '@/shoot/actions'
 import { AnswerForm } from '@/shoot/ui/answer'
@@ -85,7 +87,7 @@ export default async function DatePage({ params }: { params: Promise<{ id: strin
   const d = await dateSummary(me.id, id)
   if (!d) notFound()
   const admin = isAdmin(me)
-  const [people, ask] = await Promise.all([attendees(id), admin && !d.cancelled ? whoCanIAsk(id) : Promise.resolve([])])
+  const [people, ask, bag] = await Promise.all([attendees(id), admin && !d.cancelled ? whoCanIAsk(id) : Promise.resolve([]), dayBag(id)])
   const isPast = d.shoot_date < todayUK()
   const yes = people.filter((p) => p.answer === 'yes')
   const maybe = people.filter((p) => p.answer === 'maybe')
@@ -97,7 +99,11 @@ export default async function DatePage({ params }: { params: Promise<{ id: strin
       </p>
       <h1>{prettyDate(d.shoot_date, { long: true })}</h1>
       {d.cancelled && <div className="s-alert error">This shoot day has been cancelled.</div>}
-      {!d.cancelled && <Counts d={d} showNeeds={admin} />}
+      {!d.cancelled && <Counts d={d} showNeeds={admin && !isPast} />}
+
+      {!d.cancelled && (d.shoot_date <= todayUK() || bag.mode) && (
+        <BagSummary bag={bag} dateId={d.id} canRecord={isDeputy(me)} canRecordNow={d.shoot_date <= todayUK()} />
+      )}
 
       {!d.cancelled && !isPast && !isKeeper(me) && (
         <AnswerForm

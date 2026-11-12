@@ -75,3 +75,13 @@ export function firstAiderCurrent(p: { first_aider: boolean; first_aid_expiry: s
   if (!p.first_aider || !p.first_aid_expiry) return false
   return p.first_aid_expiry >= (onDate || todayUK())
 }
+
+export const SPECIES = ['pheasant', 'partridge', 'duck', 'pigeon', 'other'] as const
+export type Species = (typeof SPECIES)[number]
+export const SPECIES_LABEL: Record<Species, string> = {
+  pheasant: 'Pheasant',
+  partridge: 'Partridge',
+  duck: 'Duck',
+  pigeon: 'Pigeon',
+  other: 'Other',
+}
