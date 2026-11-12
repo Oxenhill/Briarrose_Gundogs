@@ -30,8 +30,6 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     name: site.businessName,
     description: site.seoDefaultDescription,
     url: siteUrl,
-    telephone: site.phone,
-    email: site.email,
     address: {
       '@type': 'PostalAddress',
       addressLocality: site.addressLocality,

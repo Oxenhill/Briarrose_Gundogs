@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { SiteSettings } from '@/lib/fallback-content'
 import { urlForImage } from '@/sanity/lib/image'
+import { ASK_URL } from '@/lib/ask'
 
 const NAV_LINKS = [
   { href: '/classes', label: 'Classes' },
@@ -83,12 +84,20 @@ export function SiteNav({ site }: { site: SiteSettings }) {
               {link.label}
             </Link>
           ))}
+          <a href={ASK_URL} target="_blank" rel="noopener noreferrer" className="pill solid">
+            Ask a question
+          </a>
           {hasBooking && (
             <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" className="pill">
               Book
             </a>
           )}
         </nav>
+
+        {/* Small screens: the side links are hidden, so keep Ask visible in the bar. */}
+        <a href={ASK_URL} target="_blank" rel="noopener noreferrer" className="pill solid nav-ask-mobile">
+          Ask
+        </a>
 
         <button
           type="button"
@@ -120,12 +129,21 @@ export function SiteNav({ site }: { site: SiteSettings }) {
           </Link>
         ))}
       </nav>
+      <a
+        href={ASK_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="pill solid"
+        onClick={() => setMenuOpen(false)}
+      >
+        Ask a question
+      </a>
       {hasBooking && (
         <a
           href={site.bookingUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="pill solid"
+          className="pill"
           onClick={() => setMenuOpen(false)}
         >
           Book

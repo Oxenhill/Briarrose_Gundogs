@@ -11,6 +11,7 @@ import { CourseNav } from '@/components/course-nav'
 import { LessonProgressControls } from '@/components/lesson-progress-controls'
 import { urlForImage } from '@/sanity/lib/image'
 import { buildMetadata } from '@/lib/seo'
+import { ASK_URL } from '@/lib/ask'
 
 export async function generateStaticParams() {
   const courses = await getCourses()
@@ -125,7 +126,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
               {isEntitled ? (
                 <p style={{ color: 'var(--ink-soft)' }}>You have full access to this course.</p>
               ) : clientId ? (
-                <PillLink href="/contact" solid>
+                <PillLink href={ASK_URL} solid external>
                   Ask About This Course
                 </PillLink>
               ) : (
@@ -134,7 +135,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                     Log In To Watch
                   </PillLink>
                   <div style={{ marginTop: 12 }}>
-                    <PillLink href="/contact">Ask About This Course</PillLink>
+                    <PillLink href={ASK_URL} external>Ask About This Course</PillLink>
                   </div>
                 </>
               )}

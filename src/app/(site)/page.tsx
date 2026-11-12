@@ -8,6 +8,8 @@ import { StarRating } from '@/components/star-rating'
 import { JsonLd } from '@/components/json-ld'
 import { buildMetadata } from '@/lib/seo'
 import { urlForImage } from '@/sanity/lib/image'
+import { AskPrompt } from '@/components/ask-prompt'
+import { ASK_URL } from '@/lib/ask'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -53,8 +55,8 @@ export default async function HomePage() {
                 Book a Session
               </PillLink>
             ) : (
-              <PillLink href="/contact" solid>
-                Get in Touch
+              <PillLink href={ASK_URL} solid external>
+                Ask a Question
               </PillLink>
             )}
             <PillLink href="/classes">View Classes</PillLink>
@@ -107,6 +109,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <AskPrompt heading="Not sure which class fits your dog?" />
+
       {testimonial && (
         <section className="quote-band" data-reveal="">
           <div className="container">
@@ -136,8 +140,8 @@ export default async function HomePage() {
               Book Now
             </PillLink>
           ) : (
-            <PillLink href="/contact" solid>
-              Contact Us
+            <PillLink href={ASK_URL} solid external>
+              Ask a Question
             </PillLink>
           )
         }

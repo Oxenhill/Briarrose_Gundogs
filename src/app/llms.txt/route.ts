@@ -1,5 +1,6 @@
 import { getSiteSettings, getClasses, getDogs, getFaqs, getPosts, getTrainerProfile } from '@/lib/queries'
 import { siteUrl } from '@/lib/seo'
+import { ASK_URL } from '@/lib/ask'
 
 /**
  * llms.txt — a machine-readable summary for AI answer engines (GEO),
@@ -73,6 +74,7 @@ export async function GET() {
   lines.push(`- Events: ${base}/events`)
   lines.push(`- FAQ: ${base}/faq`)
   lines.push(`- Contact: ${base}/contact`)
+  lines.push(`- Ask a question (answered straight away): ${ASK_URL}`)
 
   return new Response(lines.join('\n'), {
     headers: {
