@@ -22,7 +22,7 @@ const AI_CRAWLERS = [
 // The private testimonial submission page (see the "Testimonials" section
 // of the Studio for the link) isn't linked from anywhere on the site, but
 // is disallowed here too as a second layer, in case it's ever discovered.
-const DISALLOW = ['/studio', '/api', '/testimonials/submit']
+const DISALLOW = ['/studio', '/api', '/testimonials/submit', '/shoot']
 
 export default function robots(): MetadataRoute.Robots {
   const base = siteUrl()

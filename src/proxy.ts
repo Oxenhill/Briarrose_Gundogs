@@ -45,7 +45,39 @@ import { NextRequest, NextResponse } from "next/server";
  * required reading per this repo's own AGENTS.md. The matcher config
  * below is unchanged by that rename.
  */
+const SHOOT_HOST = "shoot.briarrosegundogs.co.uk";
+const MAIN_HOSTS = new Set(["briarrosegundogs.co.uk", "www.briarrosegundogs.co.uk"]);
+
+/**
+ * The WGSC shoot-team app lives under /shoot in this project and is served
+ * on its own subdomain. On the subdomain, "/" goes to the app; on the main
+ * site, /shoot is sent across to the subdomain so sign-in cookies only ever
+ * live on one host. Preview deployments (*.vercel.app) and localhost just
+ * use /shoot directly.
+ */
+function routeShoot(request: NextRequest): NextResponse | null {
+  const host = (request.headers.get("host") || "").toLowerCase();
+  const { pathname } = request.nextUrl;
+  if (host === SHOOT_HOST && pathname === "/") {
+    return NextResponse.redirect(new URL("/shoot", request.url));
+  }
+  if (MAIN_HOSTS.has(host) && (pathname === "/shoot" || pathname.startsWith("/shoot/"))) {
+    const url = new URL(request.url);
+    url.host = SHOOT_HOST;
+    url.port = "";
+    return NextResponse.redirect(url);
+  }
+  return null;
+}
+
 export function proxy(request: NextRequest) {
+  const shoot = routeShoot(request);
+  if (shoot) return shoot;
+  const path = request.nextUrl.pathname;
+  if (path === "/" || path === "/shoot" || path.startsWith("/shoot/")) {
+    return NextResponse.next();
+  }
+
   const studioUser = process.env.STUDIO_BASIC_AUTH_USER;
   const studioPass = process.env.STUDIO_BASIC_AUTH_PASS;
 
@@ -84,5 +116,12 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/studio/:path*", "/api/cloudflare-stream/:path*", "/online-learning/preview/:path*"],
+  matcher: [
+    "/studio/:path*",
+    "/api/cloudflare-stream/:path*",
+    "/online-learning/preview/:path*",
+    "/",
+    "/shoot",
+    "/shoot/:path*",
+  ],
 };
