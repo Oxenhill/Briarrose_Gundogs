@@ -3,7 +3,7 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
-import { one, q, pool } from './db'
+import { one, q, pool, ready } from './db'
 import {
   MAX_PIN_TRIES,
   canMakeAdmin,
@@ -107,6 +107,7 @@ export async function joinTeam(_: FormState, fd: FormData): Promise<FormState> {
   const isOwner = link.kind === 'owner'
   const status = link.kind === 'group' && link.needsApproval ? 'pending' : 'active'
 
+  await ready()
   const client = await pool().connect()
   let personId: string
   try {

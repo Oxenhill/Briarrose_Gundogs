@@ -1,11 +1,12 @@
 import 'server-only'
 import { Pool, types } from 'pg'
+import { bootstrap } from './bootstrap'
 
 // Keep Postgres DATE columns as plain 'YYYY-MM-DD' strings — never let them
 // become JS Dates, which would shift by an hour around BST changes.
 types.setTypeParser(1082, (v) => v)
 
-const globalForPool = globalThis as unknown as { shootPool?: Pool }
+const globalForPool = globalThis as unknown as { shootPool?: Pool; shootReady?: Promise<void> }
 
 function makePool() {
   const connectionString = process.env.SHOOT_DATABASE_URL || process.env.DATABASE_URL
@@ -26,7 +27,19 @@ export function pool() {
   return globalForPool.shootPool
 }
 
+/** Resolves once the self-setup has run on this server instance (retries on the next call if it failed). */
+export function ready(): Promise<void> {
+  if (!globalForPool.shootReady) {
+    globalForPool.shootReady = bootstrap(pool()).catch((e) => {
+      globalForPool.shootReady = undefined
+      throw e
+    })
+  }
+  return globalForPool.shootReady
+}
+
 export async function q<T = Record<string, unknown>>(text: string, params: unknown[] = []): Promise<T[]> {
+  await ready()
   const res = await pool().query(text, params)
   return res.rows as T[]
 }
