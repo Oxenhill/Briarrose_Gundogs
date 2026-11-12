@@ -44,7 +44,7 @@ create table if not exists shoot_sessions (
 -- One-time links: personal invites, PIN resets, and the system-owner bootstrap link.
 create table if not exists shoot_links (
   token_hash text primary key,
-  kind text not null check (kind in ('invite', 'reset', 'owner')),
+  kind text not null,
   person_id uuid references shoot_people(id) on delete cascade,
   created_by uuid references shoot_people(id) on delete set null,
   created_at timestamptz not null default now(),
@@ -118,3 +118,8 @@ create table if not exists shoot_bag (
 create unique index if not exists shoot_bag_drive_once_idx on shoot_bag (date_id, drive_id) where drive_id is not null;
 create unique index if not exists shoot_bag_total_once_idx on shoot_bag (date_id) where drive_id is null;
 create index if not exists shoot_bag_drive_idx on shoot_bag (drive_id);
+
+-- ---------------------------------------------------------------- admin invite link
+-- 'admin' links are shared (several people can use one) and make the joiner an admin.
+alter table shoot_links drop constraint if exists shoot_links_kind_check;
+alter table shoot_links add constraint shoot_links_kind_check check (kind in ('invite', 'reset', 'owner', 'admin'));

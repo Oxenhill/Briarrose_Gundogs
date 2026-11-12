@@ -72,16 +72,18 @@ export async function signOut() {
 // ------------------------------------------------------------------ joining
 
 type LinkInfo =
-  | { kind: 'invite' | 'owner'; tokenHash: string }
+  | { kind: 'invite' | 'owner' | 'admin'; tokenHash: string }
   | { kind: 'group'; needsApproval: boolean }
 
 export async function lookupJoinToken(token: string): Promise<LinkInfo | null> {
   if (!token || token.length > 100) return null
   const link = await one<{ kind: string; token_hash: string }>(
-    "select kind, token_hash from shoot_links where token_hash = $1 and kind in ('invite','owner') and used_at is null and expires_at > now()",
+    `select kind, token_hash from shoot_links
+      where token_hash = $1 and expires_at > now()
+        and ((kind in ('invite','owner') and used_at is null) or kind = 'admin')`,
     [hashToken(token)],
   )
-  if (link) return { kind: link.kind as 'invite' | 'owner', tokenHash: link.token_hash }
+  if (link) return { kind: link.kind as 'invite' | 'owner' | 'admin', tokenHash: link.token_hash }
   const s = await one<{ group_needs_approval: boolean }>('select group_needs_approval from shoot_settings where group_token = $1', [token])
   if (s) return { kind: 'group', needsApproval: s.group_needs_approval }
   return null
@@ -113,7 +115,7 @@ export async function joinTeam(_: FormState, fd: FormData): Promise<FormState> {
   let personId: string
   try {
     await client.query('begin')
-    if (link.kind !== 'group') {
+    if (link.kind === 'invite' || link.kind === 'owner') {
       const used = await client.query('update shoot_links set used_at = now() where token_hash = $1 and used_at is null', [link.tokenHash])
       if (used.rowCount !== 1) {
         await client.query('rollback')
@@ -126,7 +128,7 @@ export async function joinTeam(_: FormState, fd: FormData): Promise<FormState> {
          guardian_consent_at, first_aider, first_aid_expiry, first_aid_notes, first_aid_notes_consent_at, privacy_accepted_at)
        values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20, now()) returning id`,
       [
-        d.full_name, d.mobile, d.email, d.usual_team, d.can_do_other, isOwner ? 'admin' : 'member', isOwner, status,
+        d.full_name, d.mobile, d.email, d.usual_team, d.can_do_other, isOwner || link.kind === 'admin' ? 'admin' : 'member', isOwner, status,
         await hashPin(pin), d.emergency_name, d.emergency_relationship, d.emergency_phone, d.is_under_18,
         d.guardian_name, d.guardian_phone, d.guardian_consent ? new Date() : null, d.first_aider, d.first_aid_expiry,
         d.first_aid_notes, d.first_aid_notes_consent ? new Date() : null,
@@ -239,6 +241,32 @@ export async function createInvite(): Promise<FormState> {
     me.id,
   ])
   return { url: `${await origin()}${BASE}/join/${token}` }
+}
+
+/** One shared link that makes whoever joins with it an admin. Lasts 7 days; making a new one cancels the old. */
+export async function createAdminInvite(): Promise<FormState> {
+  const me = await requireAdmin()
+  if (!canMakeAdmin(me)) return { error: 'Only James, Lewis or Oliver can make an admin link.' }
+  const token = newToken()
+  await q("delete from shoot_links where kind = 'admin'")
+  await q("insert into shoot_links (token_hash, kind, created_by, expires_at) values ($1, 'admin', $2, now() + interval '7 days')", [
+    hashToken(token),
+    me.id,
+  ])
+  return { url: `${await origin()}${BASE}/join/${token}` }
+}
+
+export async function cancelAdminInvite(): Promise<void> {
+  const me = await requireAdmin()
+  if (!canMakeAdmin(me)) return
+  await q("delete from shoot_links where kind = 'admin'")
+  refresh()
+}
+
+export async function adminInviteStatus(): Promise<{ active: boolean; expires: string | null }> {
+  await requireAdmin()
+  const r = await one<{ expires_at: string }>("select expires_at from shoot_links where kind = 'admin' and expires_at > now()")
+  return { active: !!r, expires: r ? new Date(r.expires_at).toISOString().slice(0, 10) : null }
 }
 
 export async function createResetLink(personId: string): Promise<FormState> {

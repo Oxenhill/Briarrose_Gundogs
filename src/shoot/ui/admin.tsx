@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   approvePerson,
+  cancelAdminInvite,
+  createAdminInvite,
   createInvite,
   createResetLink,
   declinePerson,
@@ -13,7 +15,7 @@ import {
   setGroupApproval,
   setRole,
 } from '../actions'
-import { ROLE_LABEL, TEAM_LABEL, firstAiderCurrent, prettyPhone, whatsappShare, type Role, type Team } from '../util'
+import { ROLE_LABEL, TEAM_LABEL, firstAiderCurrent, prettyDate, prettyPhone, whatsappShare, type Role, type Team } from '../util'
 
 function ShareLink({ url, message, label }: { url: string; message: string; label: string }) {
   const [copied, setCopied] = useState(false)
@@ -60,6 +62,50 @@ export function InvitePanel() {
           {pending ? 'Making link…' : 'Invite someone'}
         </button>
       )}
+    </div>
+  )
+}
+
+export function AdminInvitePanel({ active, expires }: { active: boolean; expires: string | null }) {
+  const router = useRouter()
+  const [url, setUrl] = useState<string | null>(null)
+  const [err, setErr] = useState<string | null>(null)
+  const [pending, start] = useTransition()
+  return (
+    <div className="s-card">
+      <h2 style={{ marginTop: 0 }}>Admin link</h2>
+      <p className="s-muted">
+        One link for your admins. Everyone who joins with it becomes an admin: they can add dates, invite people, record the bag and see everyone’s
+        details. It lasts 7 days. Only send it to the people you want as admins.
+      </p>
+      {url ? (
+        <ShareLink url={url} label="Send by WhatsApp" message="Here’s your link to join the WGSC team app as an admin:" />
+      ) : (
+        <>
+          {active && <div className="s-alert">An admin link is active until {expires ? prettyDate(expires) : ''}. Making a new one stops the old one working.</div>}
+          <button
+            type="button"
+            className="s-btn full"
+            disabled={pending}
+            onClick={() => start(async () => { const r = await createAdminInvite(); if (r?.error) setErr(r.error); else setUrl(r?.url || null) })}
+          >
+            {pending ? 'Making link…' : active ? 'Make a new admin link' : 'Make admin link'}
+          </button>
+        </>
+      )}
+      {(active || url) && (
+        <button
+          type="button"
+          className="s-btn danger full"
+          style={{ marginTop: 8 }}
+          disabled={pending}
+          onClick={() => confirm('Stop the admin link working?') && start(async () => { await cancelAdminInvite(); setUrl(null); router.refresh() })}
+        >
+          Stop the admin link
+        </button>
+      )}
+      {err && <div className="s-alert error">{err}</div>}
+      <p className="s-muted s-small">Someone already in the app? Go to People, tap their name and choose Admin instead.</p>
     </div>
   )
 }
