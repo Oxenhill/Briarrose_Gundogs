@@ -866,3 +866,22 @@
     margin-top: 6px;
   }
 }
+
+@layer components {
+  /* Header pills: keep on one line, and stop the nav link colour washing
+     out the solid "Ask a question" button. */
+  .nav-row .side {
+    gap: 24px;
+  }
+  .nav-row .side a.pill {
+    white-space: nowrap;
+    padding: 11px 18px;
+  }
+  .nav-row .side a.pill.solid,
+  .nav-ask-mobile.pill.solid {
+    color: var(--on-deep);
+  }
+  .nav-row .side a.pill.solid:hover {
+    color: var(--paper);
+  }
+}
