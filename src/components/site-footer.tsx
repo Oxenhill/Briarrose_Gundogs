@@ -72,6 +72,17 @@ export async function SiteFooter({ site }: { site: SiteSettings }) {
           <p>
             {site.footerText} · {site.addressLocality}, {site.addressRegion}
           </p>
+          <p>
+            Briarrose Gundogs is part of{' '}
+            <a
+              href="https://www.dogsmarttrainingbehaviour.co.uk"
+              target="_blank"
+              rel="noopener"
+            >
+              Dog Smart Training &amp; Behaviour
+            </a>
+            .
+          </p>
         </div>
       </div>
     </footer>
