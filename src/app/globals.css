@@ -841,6 +841,47 @@
     font-size: 15.5px;
   }
 
+  /* Live waitlist times (components/waitlist-band.tsx) */
+  .waitlist-live {
+    max-width: 640px;
+    margin: 0 auto 26px;
+    text-align: left;
+  }
+  .waitlist-live-lead {
+    margin: 0 0 12px !important;
+    color: var(--ink) !important;
+    font-size: 15px;
+  }
+  .waitlist-live-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+  }
+  .waitlist-live-day {
+    width: 92px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .waitlist-live-chip {
+    font-size: 12.5px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 10px;
+    color: var(--ink-soft);
+  }
+  .waitlist-live-chip.is-best {
+    border-color: var(--ink);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .waitlist-live-note {
+    margin: 12px 0 0 !important;
+    font-size: 12px !important;
+  }
+
   /* Header "Ask" button for small screens, where the side links are hidden. */
   .nav-ask-mobile {
     display: none;
