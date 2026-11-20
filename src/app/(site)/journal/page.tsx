@@ -37,7 +37,7 @@ export default async function JournalPage() {
       <section className="container" style={{ paddingBottom: 120 }}>
         {posts.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Journal posts will appear here once published in the CMS</span>
+            <span className="tag">New articles are on their way</span>
           </div>
         ) : (
           <div style={{ display: 'grid', gap: 48 }}>

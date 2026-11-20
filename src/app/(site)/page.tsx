@@ -95,13 +95,13 @@ export default async function HomePage() {
             <p>
               {site.homeClassesBody ||
                 site.classesPageBody ||
-                'Every class below is managed from the CMS — add, reorder, or retire one any time without touching code.'}
+                'From first foundations to live game, find the session that fits where you and your dog are now.'}
             </p>
           </div>
           <div>
             {classes.length === 0 ? (
               <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-                <span className="tag">Classes will appear here once added in the CMS</span>
+                <span className="tag">New classes are being scheduled. Ask a question to hear first.</span>
               </div>
             ) : (
               classes.map((item, i) => <ClassRow key={item._id} item={item} index={i} />)

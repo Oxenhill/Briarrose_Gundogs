@@ -25,14 +25,14 @@ export default async function ClassesPage() {
         heading={site.classesPageHeading || 'Training built around your dog'}
         body={
           site.classesPageBody ||
-          'Every class here is managed from the CMS — add, reorder, price, or retire one any time without touching code.'
+          'From first foundations to live game, find the session that fits where you and your dog are now.'
         }
       />
       <section className="list-section" style={{ paddingTop: 0 }}>
         <div className="container">
           {classes.length === 0 ? (
             <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-              <span className="tag">Classes will appear here once added in the CMS</span>
+              <span className="tag">New classes are being scheduled. Ask a question to hear first.</span>
             </div>
           ) : (
             classes.map((item, i) => <ClassRow key={item._id} item={item} index={i} />)
