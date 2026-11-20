@@ -11,6 +11,7 @@ export function PageHero({ eyebrow, heading, body }: { eyebrow?: string; heading
             maxWidth: '52ch',
             margin: '20px auto 0',
             fontSize: 16,
+            whiteSpace: 'pre-line',
           }}
         >
           {body}

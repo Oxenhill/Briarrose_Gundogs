@@ -27,7 +27,7 @@ export default async function FaqPage() {
       <section className="container" style={{ paddingBottom: 120, maxWidth: 760 }}>
         {faqs.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Questions will appear here once added in the CMS</span>
+            <span className="tag">Questions and answers are on their way</span>
           </div>
         ) : (
           <div>

@@ -28,7 +28,7 @@ export default async function VideosPage() {
       <section className="container" style={{ paddingBottom: 120 }}>
         {videos.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Videos will appear here once added in the CMS</span>
+            <span className="tag">New videos are on their way</span>
           </div>
         ) : (
           <div

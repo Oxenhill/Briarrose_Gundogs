@@ -27,7 +27,7 @@ export default async function GalleryPage() {
       <section className="container" style={{ paddingBottom: 120 }}>
         {items.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Gallery photos will appear here once added in the CMS</span>
+            <span className="tag">New photos are on their way</span>
           </div>
         ) : (
           <div

@@ -38,7 +38,7 @@ export default async function EventsPage() {
       <section className="container" style={{ paddingBottom: 120 }}>
         {events.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Upcoming events will appear here once added in the CMS</span>
+            <span className="tag">No dates are fixed right now. New working days and events are posted here and on our Facebook page.</span>
           </div>
         ) : (
           <div>

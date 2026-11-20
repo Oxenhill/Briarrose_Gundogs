@@ -46,7 +46,7 @@ export default async function TestimonialsPage() {
         )}
         {testimonials.length === 0 ? (
           <div className="frame ph-texture" style={{ aspectRatio: '21/9' }}>
-            <span className="tag">Testimonials will appear here once added in the CMS</span>
+            <span className="tag">Client stories are on their way</span>
           </div>
         ) : (
         <div style={{ display: 'grid', gap: 56, maxWidth: 780, margin: '0 auto' }}>
