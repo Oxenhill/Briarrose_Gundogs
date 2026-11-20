@@ -62,7 +62,7 @@ export default async function DogsPage() {
                 )}
                 <h3 style={{ fontSize: 22, marginBottom: 6 }}>{dog.name}</h3>
                 <p style={{ color: 'var(--ink-soft)', fontSize: 14, marginBottom: 4 }}>{dog.breed}</p>
-                <p style={{ color: 'var(--ink-soft)', fontSize: 14.5 }}>{dog.blurb}</p>
+                <p style={{ color: 'var(--ink-soft)', fontSize: 14.5 }}>{dog.blurb?.split(/\n\s*\n/)[0]}</p>
               </Link>
             )
           })}

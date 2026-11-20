@@ -19,7 +19,7 @@ export async function generateMetadata({
   const { slug } = await params
   const dog = await getDogBySlug(slug)
   if (!dog) return {}
-  return buildMetadata({ title: dog.name, description: dog.blurb, path: `/dogs/${slug}` })
+  return buildMetadata({ title: dog.name, description: dog.blurb?.split(/\n\s*\n/)[0], path: `/dogs/${slug}` })
 }
 
 export default async function DogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
