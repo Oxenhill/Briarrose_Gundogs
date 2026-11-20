@@ -10,6 +10,7 @@ import { buildMetadata } from '@/lib/seo'
 import { urlForImage } from '@/sanity/lib/image'
 import { AskPrompt } from '@/components/ask-prompt'
 import { ASK_URL } from '@/lib/ask'
+import { WaitlistBand } from '@/components/waitlist-band'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -108,6 +109,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <WaitlistBand />
 
       <AskPrompt heading="Not sure which class fits your dog?" />
 

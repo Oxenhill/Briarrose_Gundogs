@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero'
 import { ClassRow } from '@/components/class-row'
 import { buildMetadata } from '@/lib/seo'
 import { AskPrompt } from '@/components/ask-prompt'
+import { WaitlistBand } from '@/components/waitlist-band'
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings()
@@ -38,6 +39,7 @@ export default async function ClassesPage() {
           )}
         </div>
       </section>
+      <WaitlistBand />
       <AskPrompt heading="Not sure where to start?" body="Tell us about your dog and ask which class or package fits. You'll get an answer straight away, and anything that needs Oliver goes straight to him." />
     </>
   )
